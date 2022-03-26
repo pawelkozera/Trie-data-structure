@@ -18,18 +18,23 @@ int wyszukaj_z_drzewa(struct Trie *korzen, char *slowo);
 void zamien_na_male_litery(char slowo[]);
 int usun_z_drzewa(struct Trie **aktualny_wezel, char *slowo);
 int ma_pod_wezly(struct Trie *aktualny_wezel);
+void odczytaj_z_pliku_i_wstaw_do_drzewa(struct Trie *korzen);
 
 int main()
 {
     struct Trie* korzen = stworz_nowe_drzewo_trie();
 
-    char z[] = "kot";
+    // testowanie działania
+    char z[] = "pies";
     wstaw_do_drzewa(korzen, z);
-    printf("%d\n", wyszukaj_z_drzewa(korzen, "kot"));
-    usun_z_drzewa(&korzen, "kot");
-    printf("%d\n", wyszukaj_z_drzewa(korzen, "kot"));
+    printf("%d\n", wyszukaj_z_drzewa(korzen, z));
+    usun_z_drzewa(&korzen, z);
+    printf("%d\n", wyszukaj_z_drzewa(korzen, z));
 
-    al_init();
+    odczytaj_z_pliku_i_wstaw_do_drzewa(korzen);
+    printf("%d\n", wyszukaj_z_drzewa(korzen, "koty"));
+    usun_z_drzewa(&korzen, "koty");
+    printf("%d\n", wyszukaj_z_drzewa(korzen, "koty"));
 
     return 0;
 }
@@ -104,7 +109,7 @@ int ma_pod_wezly(struct Trie *aktualny_wezel) {
 
 int usun_z_drzewa(struct Trie **aktualny_wezel, char *slowo) {
     if (*aktualny_wezel == NULL) {
-        return 0; // je�li drzewo jest puste zwracamy 0
+        return 0; // jeœli drzewo jest puste zwracamy 0
     }
 
     if (*slowo) {
@@ -133,4 +138,21 @@ int usun_z_drzewa(struct Trie **aktualny_wezel, char *slowo) {
     }
 
     return 0;
+}
+
+void odczytaj_z_pliku_i_wstaw_do_drzewa(struct Trie *korzen) {
+    FILE *plik;
+    plik = fopen("slownik.txt", "r");
+
+    if (plik == NULL) {
+        exit(1);
+    }
+
+    char linia[40];
+    while (fgets(linia, sizeof(linia), plik)) {
+        linia[strcspn(linia, "\n")] = 0; //usuwa znak nowej lini z ciagu znakow
+        wstaw_do_drzewa(korzen, linia);
+    }
+
+    fclose(plik);
 }
