@@ -1,7 +1,9 @@
 /* HACK: Prevent both Mesa and SGI's broken headers from screwing us */
 #define __glxext_h_
+#define __glx_glxext_h_
 #include <GL/glx.h>
 #undef __glxext_h_
+#undef __glx_glxext_h_
 
 #ifndef GLX_VERSION_1_3
 #define _ALLEGRO_GLX_VERSION_1_3
@@ -502,4 +504,12 @@ typedef XID GLXVideoCaptureDeviceNV;
 #define GLX_EXCHANGE_COMPLETE_INTEL        0x8180
 #define GLX_COPY_COMPLETE_INTEL            0x8181
 #define GLX_FLIP_COMPLETE_INTEL            0x8182
+#endif
+
+#ifndef GLX_EXT_create_context_es_profile
+#define GLX_EXT_create_context_es_profile
+#define GLX_EXT_create_context_es2_profile
+#define _ALLEGRO_GLX_EXT_create_context_es_profile
+#define GLX_CONTEXT_ES_PROFILE_BIT_EXT		0x00000004
+#define GLX_CONTEXT_ES2_PROFILE_BIT_EXT		0x00000004
 #endif

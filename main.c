@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <ctype.h>
 #include <allegro5/allegro.h>
+#include <string.h>
 
 #define LITERY_ALFABETU 26
 
@@ -27,6 +28,8 @@ int main()
     printf("%d\n", wyszukaj_z_drzewa(korzen, "kot"));
     usun_z_drzewa(&korzen, "kot");
     printf("%d\n", wyszukaj_z_drzewa(korzen, "kot"));
+
+    al_init();
 
     return 0;
 }

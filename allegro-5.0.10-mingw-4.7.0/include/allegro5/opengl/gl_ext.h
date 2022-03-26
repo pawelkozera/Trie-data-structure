@@ -2,6 +2,7 @@
 #ifndef __al_included_allegro5_gl_ext_h
 #define __al_included_allegro5_gl_ext_h
 
+#if defined(ALLEGRO_UNSTABLE) || defined(ALLEGRO_INTERNAL_UNSTABLE) || defined(ALLEGRO_SRC)
 
 /*
  * MSVC declares the following extensions and MinGW doesn't. In order to
@@ -23,7 +24,7 @@
  *
  */
 
-#if !defined(ALLEGRO_GP2XWIZ) && !defined(ALLEGRO_IPHONE)
+#if !defined ALLEGRO_CFG_OPENGLES
 #include "allegro5/opengl/GLext/gl_ext_defs.h"
 #endif
 #if defined ALLEGRO_WINDOWS && !defined ALLEGRO_EXCLUDE_WGL
@@ -134,7 +135,11 @@ typedef struct ALLEGRO_OGL_EXT_API {
 #endif
 } ALLEGRO_OGL_EXT_API;
 
+#else
 
+typedef struct ALLEGRO_OGL_EXT_LIST ALLEGRO_OGL_EXT_LIST;
+
+#endif
 
 #endif
 

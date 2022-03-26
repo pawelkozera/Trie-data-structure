@@ -40,7 +40,7 @@ struct ALLEGRO_MOUSE_STATE
     * (z) Mouse wheel position (1D 'wheel'), or,
     * (w, z) Mouse wheel position (2D 'ball')
     * display - the display the mouse is on (coordinates are relative to this)
-    * pressure - the pressure appleid to the mouse (for stylus/tablet)
+    * pressure - the pressure applied to the mouse (for stylus/tablet)
     */
    int x;
    int y;
@@ -68,6 +68,8 @@ AL_FUNC(int,            al_get_mouse_state_axis, (const ALLEGRO_MOUSE_STATE *sta
 AL_FUNC(bool, al_get_mouse_cursor_position, (int *ret_x, int *ret_y));
 AL_FUNC(bool, al_grab_mouse, (struct ALLEGRO_DISPLAY *display));
 AL_FUNC(bool, al_ungrab_mouse, (void));
+AL_FUNC(void, al_set_mouse_wheel_precision, (int precision));
+AL_FUNC(int, al_get_mouse_wheel_precision, (void));
 
 AL_FUNC(ALLEGRO_EVENT_SOURCE *, al_get_mouse_event_source, (void));
 

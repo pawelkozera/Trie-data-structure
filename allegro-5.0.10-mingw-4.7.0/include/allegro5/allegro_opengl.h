@@ -28,17 +28,25 @@
 
 #if defined ALLEGRO_IPHONE
 
+#ifdef ALLEGRO_CFG_OPENGLES1
 #include <OpenGLES/ES1/gl.h>
 #include <OpenGLES/ES1/glext.h>
+#elif defined(ALLEGRO_CFG_OPENGLES3)
+#include <OpenGLES/ES3/gl.h>
+#include <OpenGLES/ES3/glext.h>
+#elif defined(ALLEGRO_CFG_OPENGLES2)
 #include <OpenGLES/ES2/gl.h>
 #include <OpenGLES/ES2/glext.h>
+#endif
 
+#ifdef ALLEGRO_CFG_OPENGLES1
 /* Apple defines OES versions for these - however the separated alpha ones
  * don't seem to work on the device and just crash.
  */
 #define glBlendEquation glBlendEquationOES
 #define glBlendFuncSeparate glBlendFuncSeparateOES
 #define glBlendEquationSeparate glBlendEquationSeparateOES
+#define glRenderbufferStorageMultisampleEXT glRenderbufferStorageMultisampleAPPLE
 #ifdef GL_FUNC_ADD
 #undef GL_FUNC_ADD
 #undef GL_FUNC_SUBTRACT
@@ -48,7 +56,13 @@
 #define GL_FUNC_SUBTRACT GL_FUNC_SUBTRACT_OES
 #define GL_FUNC_REVERSE_SUBTRACT GL_FUNC_REVERSE_SUBTRACT_OES
 
-#elif defined ALLEGRO_MACOSX
+#elif defined(ALLEGRO_CFG_OPENGLES3)
+
+#define glRenderbufferStorageMultisampleEXT glRenderbufferStorageMultisample
+
+#endif
+
+#elif defined(ALLEGRO_MACOSX)
 
 #include <OpenGL/OpenGL.h>
 #include <OpenGL/gl.h>
@@ -58,24 +72,75 @@
 #define GL_GLEXT_PROTOTYPES
 #endif
 
-#elif defined ALLEGRO_GP2XWIZ
+#elif defined(ALLEGRO_CFG_OPENGLES1)
 
-#include <wiz/GL/gl.h>
-#include <wiz/GL/nanogl.h>
-#include <wiz/GL/wizGLES.h>
-#include <wiz/GL/egl.h>
+#include <GLES/gl.h>
+#include <GLES/glext.h>
 
-#else /* ALLEGRO_MACOSX */
+#define GL_FUNC_ADD GL_FUNC_ADD_OES
+#define GL_FUNC_SUBTRACT GL_FUNC_SUBTRACT_OES
+#define GL_FUNC_REVERSE_SUBTRACT GL_FUNC_REVERSE_SUBTRACT_OES
+
+#define GL_FRAMEBUFFER_BINDING_EXT GL_FRAMEBUFFER_BINDING_OES
+#define GL_FRAMEBUFFER_EXT GL_FRAMEBUFFER_OES
+#define GL_RENDERBUFFER_EXT GL_RENDERBUFFER_OES
+#define glBlendEquation glBlendEquationOES
+#define glBlendFuncSeparate glBlendFuncSeparateOES
+#define glBlendEquationSeparate glBlendEquationSeparateOES
+#define glGenerateMipmapEXT glGenerateMipmapOES
+#define glBindFramebufferEXT glBindFramebufferOES
+#define glDeleteFramebuffersEXT glDeleteFramebuffersOES
+#define GL_DEPTH_COMPONENT16 GL_DEPTH_COMPONENT16_OES
+#define GL_DEPTH_COMPONENT24 GL_DEPTH_COMPONENT24_OES
+#define GL_COLOR_ATTACHMENT0 GL_COLOR_ATTACHMENT0_OES
+#define GL_FRAMEBUFFER GL_FRAMEBUFFER_OES
+
+#elif defined(ALLEGRO_CFG_OPENGLES3)
+
+#include <GLES3/gl3.h>
+#include <GLES3/gl3ext.h>
+
+// TODO: should defines from GLES2 be there as well?
+// TODO: Also, how does it relate to src/opengl/ogl_helpers.h ?
+
+#define glRenderbufferStorageMultisampleEXT glRenderbufferStorageMultisample
+
+#elif defined(ALLEGRO_CFG_OPENGLES2)
+
+#include <GLES2/gl2.h>
+#include <GLES2/gl2ext.h>
+
+#define GL_RGBA8 GL_RGBA8_OES
+
+#define GL_FRAMEBUFFER_BINDING_EXT GL_FRAMEBUFFER_BINDING
+#define GL_FRAMEBUFFER_EXT GL_FRAMEBUFFER
+#define glGenerateMipmapEXT glGenerateMipmap
+#define glBindFramebufferEXT glBindFramebuffer
+#define glDeleteFramebuffersEXT glDeleteFramebuffers
+
+#else
 
 /* HACK: Prevent both Mesa and SGI's broken headers from screwing us */
 #define __glext_h_
+#define __gl_glext_h_
 #define __glxext_h_
+#define __glx_glxext_h_
 #include <GL/gl.h>
 #undef  __glext_h_
+#undef  __gl_glext_h_
 #undef  __glxext_h_
+#undef  __glx_glxext_h_
 
-#endif /* ALLEGRO_MACOSX */
+#endif
 
+#ifdef ALLEGRO_RASPBERRYPI
+#include <EGL/egl.h>
+#include <EGL/eglext.h>
+#endif
+
+#include "allegro5/bitmap.h"
+#include "allegro5/display.h"
+#include "allegro5/shader.h"
 #include "allegro5/opengl/gl_ext.h"
 
 #ifdef ALLEGRO_WINDOWS
@@ -111,12 +176,11 @@
 		typedef type (*name) args;
 #endif
 
-
 /*
  *  Public OpenGL-related API
  */
 
-/* Enum: ALLEGRO_OPENGL_VARIANT
+/* ALLEGRO_OPENGL_VARIANT
  */
 typedef enum ALLEGRO_OPENGL_VARIANT {
    ALLEGRO_DESKTOP_OPENGL = 0,
@@ -130,10 +194,11 @@ AL_FUNC(ALLEGRO_OGL_EXT_LIST*, al_get_opengl_extension_list,     (void));
 AL_FUNC(GLuint,                al_get_opengl_texture,            (ALLEGRO_BITMAP *bitmap));
 AL_FUNC(void,                  al_remove_opengl_fbo,             (ALLEGRO_BITMAP *bitmap));
 AL_FUNC(GLuint,                al_get_opengl_fbo,                (ALLEGRO_BITMAP *bitmap));
-AL_FUNC(void,                  al_get_opengl_texture_size,       (ALLEGRO_BITMAP *bitmap,
+AL_FUNC(bool,                  al_get_opengl_texture_size,       (ALLEGRO_BITMAP *bitmap,
                                                                   int *w, int *h));
 AL_FUNC(void,                  al_get_opengl_texture_position,   (ALLEGRO_BITMAP *bitmap,
                                                                   int *u, int *v));
+AL_FUNC(GLuint,                al_get_opengl_program_object,     (ALLEGRO_SHADER *shader));
 AL_FUNC(void,                  al_set_current_opengl_context,    (ALLEGRO_DISPLAY *display));
 AL_FUNC(int,                   al_get_opengl_variant,            (void));
 
