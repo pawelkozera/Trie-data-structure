@@ -19,22 +19,21 @@ void zamien_na_male_litery(char slowo[]);
 int usun_z_drzewa(struct Trie **aktualny_wezel, char *slowo);
 int ma_pod_wezly(struct Trie *aktualny_wezel);
 void odczytaj_z_pliku_i_wstaw_do_drzewa(struct Trie *korzen);
+void wypisz_drzewo(struct Trie *korzen, char slowa[], int index);
 
 int main()
 {
     struct Trie* korzen = stworz_nowe_drzewo_trie();
 
     // testowanie działania
-    char z[] = "pies";
-    wstaw_do_drzewa(korzen, z);
-    printf("%d\n", wyszukaj_z_drzewa(korzen, z));
-    usun_z_drzewa(&korzen, z);
-    printf("%d\n", wyszukaj_z_drzewa(korzen, z));
+    char z[] = "dog";
+    char x[] = "s";
 
+    wstaw_do_drzewa(korzen, z);
     odczytaj_z_pliku_i_wstaw_do_drzewa(korzen);
-    printf("%d\n", wyszukaj_z_drzewa(korzen, "koty"));
-    usun_z_drzewa(&korzen, "koty");
-    printf("%d\n", wyszukaj_z_drzewa(korzen, "koty"));
+
+    char slowa[30];
+    wypisz_drzewo(korzen, slowa, 0);
 
     return 0;
 }
@@ -59,8 +58,9 @@ struct Trie* stworz_nowe_drzewo_trie() {
 odejmujac 'a' otrzymujemy indeksy od 0 do 25, dla alfabetu od a do z bez Polskich znakow
 */
 void wstaw_do_drzewa(struct Trie *korzen, char slowo[]) {
-    struct Trie* aktualny_wezel = korzen;
+    struct Trie *aktualny_wezel = korzen;
     zamien_na_male_litery(slowo);
+    printf("dl: %d\n", strlen(slowo));
 
     while (*slowo) {
         if (aktualny_wezel->litery[*slowo - 'a'] == NULL) {
@@ -155,4 +155,19 @@ void odczytaj_z_pliku_i_wstaw_do_drzewa(struct Trie *korzen) {
     }
 
     fclose(plik);
+}
+
+void wypisz_drzewo(struct Trie *korzen, char slowa[], int index) {
+    if (korzen != NULL) {
+        if (korzen->jest_lisciem) {
+            slowa[index] = '\0';
+            printf("%s\n", slowa);
+        }
+        for (int i = 0; i < LITERY_ALFABETU; i++) {
+            if (korzen->litery[i] != NULL) {
+                slowa[index] = 'a' + i;
+                wypisz_drzewo(korzen->litery[i], slowa, index + 1);
+            }
+        }
+    }
 }
