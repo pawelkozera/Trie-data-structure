@@ -1,5 +1,5 @@
 # depslib dependency file v1.0
-1648376058 source:c:\users\admin\desktop\algorytmy\trie-data-structure\main.c
+1648378219 source:c:\users\admin\desktop\algorytmy\trie-data-structure\main.c
 	<stdio.h>
 	<stdlib.h>
 	<ctype.h>

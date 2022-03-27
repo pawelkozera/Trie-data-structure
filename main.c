@@ -19,6 +19,8 @@ void zamien_na_male_litery(char slowo[]);
 int usun_z_drzewa(struct Trie **aktualny_wezel, char *slowo);
 int ma_pod_wezly(struct Trie *aktualny_wezel);
 void odczytaj_z_pliku_i_wstaw_do_drzewa(struct Trie *korzen);
+void zapisz_do_pliku(struct Trie *korzen);
+void zapisz_drzewo(struct Trie *korzen, char slowa[], int index);
 void wypisz_drzewo(struct Trie *korzen, char slowa[], int index);
 
 int main()
@@ -31,6 +33,8 @@ int main()
 
     wstaw_do_drzewa(korzen, z);
     odczytaj_z_pliku_i_wstaw_do_drzewa(korzen);
+
+    zapisz_do_pliku(korzen);
 
     char slowa[30];
     wypisz_drzewo(korzen, slowa, 0);
@@ -60,7 +64,6 @@ odejmujac 'a' otrzymujemy indeksy od 0 do 25, dla alfabetu od a do z bez Polskic
 void wstaw_do_drzewa(struct Trie *korzen, char slowo[]) {
     struct Trie *aktualny_wezel = korzen;
     zamien_na_male_litery(slowo);
-    printf("dl: %d\n", strlen(slowo));
 
     while (*slowo) {
         if (aktualny_wezel->litery[*slowo - 'a'] == NULL) {
@@ -155,6 +158,34 @@ void odczytaj_z_pliku_i_wstaw_do_drzewa(struct Trie *korzen) {
     }
 
     fclose(plik);
+}
+
+void zapisz_do_pliku(struct Trie *korzen) {
+    FILE *plik;
+    plik = fopen("slownik.txt", "w");
+    fclose(plik);
+
+    char slowa[30];
+    zapisz_drzewo(korzen, slowa, 0);
+}
+
+void zapisz_drzewo(struct Trie *korzen, char slowa[], int index) {
+    if (korzen != NULL) {
+        if (korzen->jest_lisciem) {
+            slowa[index] = '\0';
+            FILE *plik;
+            plik = fopen("slownik.txt", "a");
+            fprintf(plik, "%s\n", slowa);
+
+            fclose(plik);
+        }
+        for (int i = 0; i < LITERY_ALFABETU; i++) {
+            if (korzen->litery[i] != NULL) {
+                slowa[index] = 'a' + i;
+                zapisz_drzewo(korzen->litery[i], slowa, index + 1);
+            }
+        }
+    }
 }
 
 void wypisz_drzewo(struct Trie *korzen, char slowa[], int index) {

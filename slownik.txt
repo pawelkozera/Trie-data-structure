@@ -1,3 +1,5 @@
-psy
+dog
 kot
-pies
+koty
+psa
+psy
