@@ -1,10 +1,15 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <ctype.h>
-#include <allegro5/allegro.h>
+#include <allegro5/allegro5.h>
 #include <string.h>
 
 #define LITERY_ALFABETU 26
+
+/*
+    Dokumentacja Allegro5
+    https://github.com/liballeg/allegro_wiki/wiki/Allegro-Vivace%3A-Basic-game-structure
+*/
 
 struct Trie {
     int jest_lisciem; // 1 gdy jest lisciem, 0 gdy nie jest
