@@ -16,7 +16,7 @@ struct Trie {
     struct Trie* litery[LITERY_ALFABETU];
 };
 
-//Porotypy funkcji
+//Prototypy funkcji
 struct Trie* stworz_nowe_drzewo_trie();
 void wstaw_do_drzewa(struct Trie *korzen, char slowo[]);
 int wyszukaj_z_drzewa(struct Trie *korzen, char *slowo);
@@ -27,19 +27,12 @@ void odczytaj_z_pliku_i_wstaw_do_drzewa(struct Trie *korzen);
 void zapisz_do_pliku(struct Trie *korzen);
 void zapisz_drzewo(struct Trie *korzen, char slowa[], int index);
 void wypisz_drzewo(struct Trie *korzen, char slowa[], int index);
+void wybor_akcji(struct Trie *korzen);
 
 int main()
 {
     struct Trie* korzen = stworz_nowe_drzewo_trie();
-
-    // testowanie działania
-    char z[] = "dog";
-    char x[] = "s";
-
-    wstaw_do_drzewa(korzen, z);
-    odczytaj_z_pliku_i_wstaw_do_drzewa(korzen);
-
-    zapisz_do_pliku(korzen);
+    wybor_akcji(korzen);
 
     char slowa[30];
     wypisz_drzewo(korzen, slowa, 0);
@@ -205,5 +198,50 @@ void wypisz_drzewo(struct Trie *korzen, char slowa[], int index) {
                 wypisz_drzewo(korzen->litery[i], slowa, index + 1);
             }
         }
+    }
+}
+
+void wybor_akcji(struct Trie *korzen)
+{
+    int a;
+    do
+    {
+        puts("Wybierz akcje: \n1 - Wstaw do drzewa\n2 - Usun z drzewa\n3 - Wyszukaj w drzewie\n4 - Odczytaj drzewo z pliku\n5 - Zapisz drzewo do pliku");
+        scanf("%d", &a);
+    }
+    while((a < 0) && (a > 6));
+    switch(a)
+    {
+        case 1:
+            {
+                char z[20];
+                puts("Napisz co wstawic: ");
+                scanf("%s", &z);
+                wstaw_do_drzewa(korzen, z);
+                break;
+            }/*
+        case 2:
+            {
+                usun_z_drzewa(korzen, z);
+                break;
+            }
+        case 3:
+            {
+                wyszukaj_z_drzewa(korzen, z);
+                break;
+            }
+        case 4:
+            {
+                odczytaj_z_pliku_i_wstaw_do_drzewa(korzen);
+                break;
+            }
+        case 5:
+            {
+                zapisz_do_pliku(korzen);
+                break;
+            }*/
+        default:
+            puts("Blad wyboru akcji");
+            break;
     }
 }
