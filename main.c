@@ -2,9 +2,14 @@
 #include <stdlib.h>
 #include <ctype.h>
 #include <allegro5/allegro5.h>
+#include <allegro5/allegro_font.h>
+#include <allegro5/allegro_primitives.h>
 #include <string.h>
 
 #define LITERY_ALFABETU 26
+#define SCREEN_WIDTH 800
+#define SCREEN_HEIGHT 600
+#define SREDNICA_OKREGU 30
 
 /*
     Dokumentacja Allegro5
@@ -26,16 +31,70 @@ int ma_pod_wezly(struct Trie *aktualny_wezel);
 void odczytaj_z_pliku_i_wstaw_do_drzewa(struct Trie *korzen);
 void zapisz_do_pliku(struct Trie *korzen);
 void zapisz_drzewo(struct Trie *korzen, char slowa[], int index);
-void wypisz_drzewo(struct Trie *korzen, char slowa[], int index);
+void narysuj_drzewo(struct Trie *korzen, char slowa[], int index,  int width, int height);
 void wybor_akcji(struct Trie *korzen);
 
 int main()
 {
     struct Trie* korzen = stworz_nowe_drzewo_trie();
-    wybor_akcji(korzen);
+    //wybor_akcji(korzen);
 
-    char slowa[30];
-    wypisz_drzewo(korzen, slowa, 0);
+    // test
+
+    // testowanie działania
+    char z[] = "dog";
+    char x[] = "kot";
+
+    wstaw_do_drzewa(korzen, z);
+    wstaw_do_drzewa(korzen, x);
+
+    //Allegro5
+    al_init();
+    al_install_keyboard();
+
+    ALLEGRO_TIMER* timer = al_create_timer(1.0 / 60.0);
+    ALLEGRO_EVENT_QUEUE* queue = al_create_event_queue();
+    ALLEGRO_DISPLAY* disp = al_create_display(SCREEN_WIDTH, SCREEN_HEIGHT);
+    ALLEGRO_FONT* font = al_create_builtin_font();
+
+    al_register_event_source(queue, al_get_keyboard_event_source());
+    al_register_event_source(queue, al_get_display_event_source(disp));
+    al_register_event_source(queue, al_get_timer_event_source(timer));
+
+    bool redraw = true;
+    ALLEGRO_EVENT event;
+
+    al_init_primitives_addon();
+
+    al_start_timer(timer);
+    while(1)
+    {
+        al_wait_for_event(queue, &event);
+
+        if (event.type == ALLEGRO_EVENT_TIMER) {
+            redraw = true;
+        }
+        else if (event.type == ALLEGRO_EVENT_DISPLAY_CLOSE) {
+            break;
+        }
+
+        if (redraw && al_is_event_queue_empty(queue))
+        {
+            al_clear_to_color(al_map_rgb(0, 0, 0));
+
+            char slowa[30];
+            narysuj_drzewo(korzen, slowa, 0, SREDNICA_OKREGU + 10, SREDNICA_OKREGU + 20);
+
+            al_flip_display();
+
+            redraw = false;
+        }
+    }
+
+    al_destroy_font(font);
+    al_destroy_display(disp);
+    al_destroy_timer(timer);
+    al_destroy_event_queue(queue);
 
     return 0;
 }
@@ -186,16 +245,21 @@ void zapisz_drzewo(struct Trie *korzen, char slowa[], int index) {
     }
 }
 
-void wypisz_drzewo(struct Trie *korzen, char slowa[], int index) {
+void narysuj_drzewo(struct Trie *korzen, char slowa[], int index, int width, int height) {
     if (korzen != NULL) {
         if (korzen->jest_lisciem) {
             slowa[index] = '\0';
-            printf("%s\n", slowa);
         }
+
+        int przesuniecie_w_prawo = 20;
         for (int i = 0; i < LITERY_ALFABETU; i++) {
             if (korzen->litery[i] != NULL) {
                 slowa[index] = 'a' + i;
-                wypisz_drzewo(korzen->litery[i], slowa, index + 1);
+                al_draw_circle(width + przesuniecie_w_prawo, height, SREDNICA_OKREGU, al_map_rgb(0, 255, 0), 2);
+
+                narysuj_drzewo(korzen->litery[i], slowa, index + 1, width + przesuniecie_w_prawo, height + SREDNICA_OKREGU*2 + 20);
+
+                przesuniecie_w_prawo = przesuniecie_w_prawo + SREDNICA_OKREGU*2 + 20;
             }
         }
     }
