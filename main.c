@@ -28,8 +28,8 @@ int wyszukaj_z_drzewa(struct Trie *korzen, char *slowo);
 void zamien_na_male_litery(char slowo[]);
 int usun_z_drzewa(struct Trie **aktualny_wezel, char *slowo);
 int ma_pod_wezly(struct Trie *aktualny_wezel);
-void odczytaj_z_pliku_i_wstaw_do_drzewa(struct Trie *korzen);
-void zapisz_do_pliku(struct Trie *korzen);
+bool odczytaj_z_pliku_i_wstaw_do_drzewa(struct Trie *korzen);
+bool zapisz_do_pliku(struct Trie *korzen);
 void zapisz_drzewo(struct Trie *korzen, char slowa[], int index);
 void narysuj_drzewo(struct Trie *korzen, char slowa[], int index,  int width, int height);
 void wybor_akcji(struct Trie *korzen);
@@ -200,7 +200,7 @@ int usun_z_drzewa(struct Trie **aktualny_wezel, char *slowo) {
     return 0;
 }
 
-void odczytaj_z_pliku_i_wstaw_do_drzewa(struct Trie *korzen) {
+bool odczytaj_z_pliku_i_wstaw_do_drzewa(struct Trie *korzen) {
     FILE *plik;
     plik = fopen("slownik.txt", "r");
 
@@ -215,15 +215,17 @@ void odczytaj_z_pliku_i_wstaw_do_drzewa(struct Trie *korzen) {
     }
 
     fclose(plik);
+    return 1;
 }
 
-void zapisz_do_pliku(struct Trie *korzen) {
+bool zapisz_do_pliku(struct Trie *korzen) {
     FILE *plik;
     plik = fopen("slownik.txt", "w");
     fclose(plik);
 
     char slowa[30];
     zapisz_drzewo(korzen, slowa, 0);
+    return 1;
 }
 
 void zapisz_drzewo(struct Trie *korzen, char slowa[], int index) {
@@ -268,6 +270,7 @@ void narysuj_drzewo(struct Trie *korzen, char slowa[], int index, int width, int
 void wybor_akcji(struct Trie *korzen)
 {
     int a;
+    char z[30];
     do
     {
         puts("Wybierz akcje: \n1 - Wstaw do drzewa\n2 - Usun z drzewa\n3 - Wyszukaj w drzewie\n4 - Odczytaj drzewo z pliku\n5 - Zapisz drzewo do pliku");
@@ -278,32 +281,41 @@ void wybor_akcji(struct Trie *korzen)
     {
         case 1:
             {
-                char z[20];
-                puts("Napisz co wstawic: ");
-                scanf("%s", &z);
+                puts("Napisz co wstawic do drzewa: ");
+                scanf("%s", z);
                 wstaw_do_drzewa(korzen, z);
                 break;
-            }/*
+            }
         case 2:
             {
-                usun_z_drzewa(korzen, z);
+                puts("Napisz co usunac z drzewa: ");
+                scanf("%s", z);
+                usun_z_drzewa(&korzen, z);
                 break;
             }
         case 3:
             {
+                puts("Napisz co wyszukac w drzewie: ");
+                scanf("%s", z);
                 wyszukaj_z_drzewa(korzen, z);
                 break;
             }
         case 4:
             {
-                odczytaj_z_pliku_i_wstaw_do_drzewa(korzen);
+                if(odczytaj_z_pliku_i_wstaw_do_drzewa(korzen) == true)
+                    puts("Operacja zakonczona sukcesem");
+                else
+                    puts("Operacja zakonczona niepowodzeniem");
                 break;
             }
         case 5:
             {
-                zapisz_do_pliku(korzen);
+                if(zapisz_do_pliku(korzen) == true)
+                    puts("Operacja zakonczona sukcesem");
+                else
+                    puts("Operacja zakonczona niepowodzeniem");
                 break;
-            }*/
+            }
         default:
             puts("Blad wyboru akcji");
             break;
