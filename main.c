@@ -10,6 +10,8 @@
 #define SCREEN_WIDTH 800
 #define SCREEN_HEIGHT 600
 #define SREDNICA_OKREGU 30
+#define KEY_SEEN     1
+#define KEY_RELEASED 2
 
 /*
     Dokumentacja Allegro5
@@ -19,6 +21,10 @@
 struct Trie {
     int jest_lisciem; // 1 gdy jest lisciem, 0 gdy nie jest
     struct Trie* litery[LITERY_ALFABETU];
+};
+
+struct Kamera {
+    int x, y;
 };
 
 //Prototypy funkcji
@@ -32,12 +38,13 @@ bool odczytaj_z_pliku_i_wstaw_do_drzewa(struct Trie *korzen);
 bool zapisz_do_pliku(struct Trie *korzen);
 void zapisz_drzewo(struct Trie *korzen, char slowa[], int index);
 void wybor_akcji(struct Trie *korzen);
-int narysuj_drzewo(struct Trie *korzen, int width, int height, ALLEGRO_FONT* font, int glebokosc);
+int narysuj_drzewo(struct Trie *korzen, int szerokosc, int wysokosc, ALLEGRO_FONT* font, int glebokosc, struct Kamera kamera);
 int ilosc_galezi(struct Trie *korzen);
 
 int main()
 {
     struct Trie* korzen = stworz_nowe_drzewo_trie();
+    struct Kamera kamera = {0, 0};
     //wybor_akcji(korzen);
 
     // test
@@ -45,7 +52,7 @@ int main()
     // testowanie działania
     char z[] = "dog";
     char x[] = "kot";
-    char c[] = "koam";
+    char c[] = "koala";
 
     wstaw_do_drzewa(korzen, z);
     wstaw_do_drzewa(korzen, x);
@@ -70,14 +77,46 @@ int main()
     al_init_primitives_addon();
 
     al_start_timer(timer);
-    while(1)
-    {
+
+    unsigned char key[ALLEGRO_KEY_MAX];
+    memset(key, 0, sizeof(key));
+
+    bool zakoncz_program = false;
+    while(1) {
         al_wait_for_event(queue, &event);
 
-        if (event.type == ALLEGRO_EVENT_TIMER) {
-            redraw = true;
+        switch(event.type) {
+            case ALLEGRO_EVENT_TIMER:
+                if(key[ALLEGRO_KEY_UP])
+                    kamera.y += 10;
+                if(key[ALLEGRO_KEY_DOWN])
+                    kamera.y -= 10;
+                if(key[ALLEGRO_KEY_LEFT])
+                    kamera.x += 10;
+                if(key[ALLEGRO_KEY_RIGHT])
+                    kamera.x -= 10;
+                if(key[ALLEGRO_KEY_ESCAPE])
+                    zakoncz_program = true;
+
+                for(int i = 0; i < ALLEGRO_KEY_MAX; i++)
+                    key[i] &= KEY_SEEN;
+
+                redraw = true;
+                break;
+
+            case ALLEGRO_EVENT_KEY_DOWN:
+                key[event.keyboard.keycode] = KEY_SEEN | KEY_RELEASED;
+                break;
+            case ALLEGRO_EVENT_KEY_UP:
+                key[event.keyboard.keycode] &= KEY_RELEASED;
+                break;
+
+            case ALLEGRO_EVENT_DISPLAY_CLOSE:
+                zakoncz_program = true;
+                break;
         }
-        else if (event.type == ALLEGRO_EVENT_DISPLAY_CLOSE) {
+
+        if (zakoncz_program) {
             break;
         }
 
@@ -85,7 +124,7 @@ int main()
         {
             al_clear_to_color(al_map_rgb(0, 0, 0));
 
-            narysuj_drzewo(korzen, SREDNICA_OKREGU + 10, SREDNICA_OKREGU + 120, font, 0);
+            narysuj_drzewo(korzen, SREDNICA_OKREGU + 10, SREDNICA_OKREGU + 120, font, 0, kamera);
 
             al_flip_display();
 
@@ -304,7 +343,7 @@ void wybor_akcji(struct Trie *korzen)
     }
 }
 
-int narysuj_drzewo(struct Trie *korzen, int width, int height, ALLEGRO_FONT* font, int glebokosc) {
+int narysuj_drzewo(struct Trie *korzen, int szerokosc, int wysokosc, ALLEGRO_FONT* font, int glebokosc, struct Kamera kamera) {
     if (korzen != NULL) {
         int ilosc_g = ilosc_galezi(korzen);
         int ilosc_g_bufor = ilosc_g;
@@ -314,35 +353,36 @@ int narysuj_drzewo(struct Trie *korzen, int width, int height, ALLEGRO_FONT* fon
 
         for (int i = 0; i < LITERY_ALFABETU; i++) {
             if (korzen->litery[i] != NULL) {
-                width = narysuj_drzewo(korzen->litery[i], width, height + 100, font, glebokosc+1);
+                szerokosc = narysuj_drzewo(korzen->litery[i], szerokosc, wysokosc + 100, font, glebokosc+1, kamera);
                 litera[0] = 'a' + i;
 
-                al_draw_circle(width, height, SREDNICA_OKREGU, al_map_rgb(0, 255, 0), 2);
-                al_draw_textf(font, al_map_rgb(255, 255, 255), width, height, 0, litera);
+                al_draw_circle(szerokosc + kamera.x, wysokosc + kamera.y, SREDNICA_OKREGU, al_map_rgb(0, 255, 0), 2);
+                al_draw_textf(font, al_map_rgb(255, 255, 255), szerokosc + kamera.x, wysokosc + kamera.y, 0, litera);
+
                 if (glebokosc != 0) {
-                    al_draw_line(width, height - SREDNICA_OKREGU, width + (SREDNICA_OKREGU + 40)*ilosc_g, height - 100 + SREDNICA_OKREGU, al_map_rgb_f(1, 0, 0), 1);
+                    al_draw_line(szerokosc + kamera.x, wysokosc - SREDNICA_OKREGU + kamera.y, szerokosc + (SREDNICA_OKREGU + 40)*ilosc_g + kamera.x, wysokosc - 100 + SREDNICA_OKREGU + kamera.y, al_map_rgb_f(1, 0, 0), 1);
                 }
 
                 if (glebokosc == 0) {
-                    szerokosci[n_szerokosci] = width;
+                    szerokosci[n_szerokosci] = szerokosc;
                     n_szerokosci++;
                 }
 
-                width += SREDNICA_OKREGU + 40;
+                szerokosc += SREDNICA_OKREGU + 40;
                 ilosc_g--;
             }
         }
 
         if (glebokosc == 0) {
-            al_draw_circle(width/2, SREDNICA_OKREGU, SREDNICA_OKREGU, al_map_rgb(0, 255, 0), 2);
-            al_draw_textf(font, al_map_rgb(255, 255, 255), width/2, SREDNICA_OKREGU, 0, "#");
+            al_draw_circle(szerokosc/2 + kamera.x, SREDNICA_OKREGU + kamera.y, SREDNICA_OKREGU, al_map_rgb(0, 255, 0), 2);
+            al_draw_textf(font, al_map_rgb(255, 255, 255), szerokosc/2 + kamera.x, SREDNICA_OKREGU + kamera.y, 0, "#");
             for (int i = 0; i < ilosc_g_bufor; i++) {
-                al_draw_line(width/2, SREDNICA_OKREGU*2, szerokosci[i], height-SREDNICA_OKREGU, al_map_rgb_f(1, 0, 0), 1);
+                al_draw_line(szerokosc/2 + kamera.x, SREDNICA_OKREGU*2 + kamera.y, szerokosci[i] + kamera.x, wysokosc-SREDNICA_OKREGU + kamera.y, al_map_rgb_f(1, 0, 0), 1);
             }
         }
     }
 
-    return width;
+    return szerokosc;
 }
 
 int ilosc_galezi(struct Trie *korzen) {
