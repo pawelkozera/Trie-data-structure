@@ -31,8 +31,9 @@ int ma_pod_wezly(struct Trie *aktualny_wezel);
 bool odczytaj_z_pliku_i_wstaw_do_drzewa(struct Trie *korzen);
 bool zapisz_do_pliku(struct Trie *korzen);
 void zapisz_drzewo(struct Trie *korzen, char slowa[], int index);
-void narysuj_drzewo(struct Trie *korzen, char slowa[], int index,  int width, int height);
 void wybor_akcji(struct Trie *korzen);
+int narysuj_drzewo(struct Trie *korzen, int width, int height, ALLEGRO_FONT* font, int glebokosc);
+int ilosc_galezi(struct Trie *korzen);
 
 int main()
 {
@@ -44,9 +45,11 @@ int main()
     // testowanie działania
     char z[] = "dog";
     char x[] = "kot";
+    char c[] = "koam";
 
     wstaw_do_drzewa(korzen, z);
     wstaw_do_drzewa(korzen, x);
+    wstaw_do_drzewa(korzen, c);
 
     //Allegro5
     al_init();
@@ -82,8 +85,7 @@ int main()
         {
             al_clear_to_color(al_map_rgb(0, 0, 0));
 
-            char slowa[30];
-            narysuj_drzewo(korzen, slowa, 0, SREDNICA_OKREGU + 10, SREDNICA_OKREGU + 20);
+            narysuj_drzewo(korzen, SREDNICA_OKREGU + 10, SREDNICA_OKREGU + 120, font, 0);
 
             al_flip_display();
 
@@ -247,26 +249,6 @@ void zapisz_drzewo(struct Trie *korzen, char slowa[], int index) {
     }
 }
 
-void narysuj_drzewo(struct Trie *korzen, char slowa[], int index, int width, int height) {
-    if (korzen != NULL) {
-        if (korzen->jest_lisciem) {
-            slowa[index] = '\0';
-        }
-
-        int przesuniecie_w_prawo = 20;
-        for (int i = 0; i < LITERY_ALFABETU; i++) {
-            if (korzen->litery[i] != NULL) {
-                slowa[index] = 'a' + i;
-                al_draw_circle(width + przesuniecie_w_prawo, height, SREDNICA_OKREGU, al_map_rgb(0, 255, 0), 2);
-
-                narysuj_drzewo(korzen->litery[i], slowa, index + 1, width + przesuniecie_w_prawo, height + SREDNICA_OKREGU*2 + 20);
-
-                przesuniecie_w_prawo = przesuniecie_w_prawo + SREDNICA_OKREGU*2 + 20;
-            }
-        }
-    }
-}
-
 void wybor_akcji(struct Trie *korzen)
 {
     int a;
@@ -320,4 +302,56 @@ void wybor_akcji(struct Trie *korzen)
             puts("Blad wyboru akcji");
             break;
     }
+}
+
+int narysuj_drzewo(struct Trie *korzen, int width, int height, ALLEGRO_FONT* font, int glebokosc) {
+    if (korzen != NULL) {
+        int ilosc_g = ilosc_galezi(korzen);
+        int ilosc_g_bufor = ilosc_g;
+        char litera[] = "a";
+        int szerokosci[LITERY_ALFABETU] = {0};
+        int n_szerokosci = 0;
+
+        for (int i = 0; i < LITERY_ALFABETU; i++) {
+            if (korzen->litery[i] != NULL) {
+                width = narysuj_drzewo(korzen->litery[i], width, height + 100, font, glebokosc+1);
+                litera[0] = 'a' + i;
+
+                al_draw_circle(width, height, SREDNICA_OKREGU, al_map_rgb(0, 255, 0), 2);
+                al_draw_textf(font, al_map_rgb(255, 255, 255), width, height, 0, litera);
+                if (glebokosc != 0) {
+                    al_draw_line(width, height - SREDNICA_OKREGU, width + (SREDNICA_OKREGU + 40)*ilosc_g, height - 100 + SREDNICA_OKREGU, al_map_rgb_f(1, 0, 0), 1);
+                }
+
+                if (glebokosc == 0) {
+                    szerokosci[n_szerokosci] = width;
+                    n_szerokosci++;
+                }
+
+                width += SREDNICA_OKREGU + 40;
+                ilosc_g--;
+            }
+        }
+
+        if (glebokosc == 0) {
+            al_draw_circle(width/2, SREDNICA_OKREGU, SREDNICA_OKREGU, al_map_rgb(0, 255, 0), 2);
+            al_draw_textf(font, al_map_rgb(255, 255, 255), width/2, SREDNICA_OKREGU, 0, "#");
+            for (int i = 0; i < ilosc_g_bufor; i++) {
+                al_draw_line(width/2, SREDNICA_OKREGU*2, szerokosci[i], height-SREDNICA_OKREGU, al_map_rgb_f(1, 0, 0), 1);
+            }
+        }
+    }
+
+    return width;
+}
+
+int ilosc_galezi(struct Trie *korzen) {
+    int ilosc = 0;
+    for (int i = 0; i < LITERY_ALFABETU; i++) {
+        if (korzen->litery[i] != NULL) {
+            ilosc++;
+        }
+    }
+
+    return ilosc;
 }
