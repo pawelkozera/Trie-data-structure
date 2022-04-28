@@ -7,8 +7,8 @@
 #include <string.h>
 
 #define LITERY_ALFABETU 26
-#define SCREEN_WIDTH 800
-#define SCREEN_HEIGHT 600
+#define SZEROKOSC_EKRANU 800
+#define WYSOKOSC_EKRANU 600
 #define SREDNICA_OKREGU 30
 #define KEY_SEEN     1
 #define KEY_RELEASED 2
@@ -27,6 +27,11 @@ struct Kamera {
     int x, y;
 };
 
+struct Przycisk {
+    int x, y, szerokosc, wysokosc;
+    char napis[10];
+};
+
 //Prototypy funkcji
 struct Trie* stworz_nowe_drzewo_trie();
 void wstaw_do_drzewa(struct Trie *korzen, char slowo[]);
@@ -40,14 +45,22 @@ void zapisz_drzewo(struct Trie *korzen, char slowa[], int index);
 void wybor_akcji(struct Trie *korzen);
 int narysuj_drzewo(struct Trie *korzen, int szerokosc, int wysokosc, ALLEGRO_FONT* font, int glebokosc, struct Kamera kamera);
 int ilosc_galezi(struct Trie *korzen);
+void narysuj_menu(ALLEGRO_FONT* font, struct Przycisk przycisk) {
+    al_draw_filled_rectangle(przycisk.x, przycisk.y, przycisk.x + przycisk.szerokosc, przycisk.y + przycisk.wysokosc, al_map_rgb(112, 110, 104));
+    al_draw_textf(font, al_map_rgb(255, 255, 255), przycisk.x + 10, przycisk.y + (przycisk.wysokosc/2), 0, przycisk.napis);
+}
 
 int main()
 {
     struct Trie* korzen = stworz_nowe_drzewo_trie();
     struct Kamera kamera = {0, 0};
-    //wybor_akcji(korzen);
+    struct Przycisk przycisk_dodaj = {20, WYSOKOSC_EKRANU - 60, 80, 40, "Dodaj"};
+    struct Przycisk przycisk_usun = {120, WYSOKOSC_EKRANU - 60, 80, 40, "Usun"};
+    struct Przycisk przycisk_znajdz = {220, WYSOKOSC_EKRANU - 60, 80, 40, "Znajdz"};
+    struct Przycisk przycisk_zapisz = {320, WYSOKOSC_EKRANU - 60, 80, 40, "Zapisz"};
+    struct Przycisk przycisk_wczytaj = {420, WYSOKOSC_EKRANU - 60, 80, 40, "Wczytaj"};
 
-    // test
+    //wybor_akcji(korzen);
 
     // testowanie działania
     char z[] = "dog";
@@ -64,7 +77,7 @@ int main()
 
     ALLEGRO_TIMER* timer = al_create_timer(1.0 / 60.0);
     ALLEGRO_EVENT_QUEUE* queue = al_create_event_queue();
-    ALLEGRO_DISPLAY* disp = al_create_display(SCREEN_WIDTH, SCREEN_HEIGHT);
+    ALLEGRO_DISPLAY* disp = al_create_display(SZEROKOSC_EKRANU, WYSOKOSC_EKRANU);
     ALLEGRO_FONT* font = al_create_builtin_font();
 
     al_register_event_source(queue, al_get_keyboard_event_source());
@@ -125,6 +138,11 @@ int main()
             al_clear_to_color(al_map_rgb(0, 0, 0));
 
             narysuj_drzewo(korzen, SREDNICA_OKREGU + 10, SREDNICA_OKREGU + 120, font, 0, kamera);
+            narysuj_menu(font, przycisk_dodaj);
+            narysuj_menu(font, przycisk_usun);
+            narysuj_menu(font, przycisk_znajdz);
+            narysuj_menu(font, przycisk_wczytaj);
+            narysuj_menu(font, przycisk_zapisz);
 
             al_flip_display();
 
