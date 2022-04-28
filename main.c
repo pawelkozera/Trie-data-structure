@@ -12,6 +12,7 @@
 #define SREDNICA_OKREGU 30
 #define KEY_SEEN     1
 #define KEY_RELEASED 2
+#define ILOSC_PRZYCISKOW 5
 
 /*
     Dokumentacja Allegro5
@@ -42,21 +43,24 @@ int ma_pod_wezly(struct Trie *aktualny_wezel);
 bool odczytaj_z_pliku_i_wstaw_do_drzewa(struct Trie *korzen);
 bool zapisz_do_pliku(struct Trie *korzen);
 void zapisz_drzewo(struct Trie *korzen, char slowa[], int index);
-void wybor_akcji(struct Trie *korzen);
+void wybor_akcji(struct Trie *korzen, int nacisniety_przycisk);
 int narysuj_drzewo(struct Trie *korzen, int szerokosc, int wysokosc, ALLEGRO_FONT* font, int glebokosc, struct Kamera kamera);
 int ilosc_galezi(struct Trie *korzen);
 void narysuj_menu(ALLEGRO_FONT* font, struct Przycisk przycisk);
-void sprawdz_nacisniecie_przycisku(int mysz_x, int mysz_y, struct Przycisk przyciski[]) {
+
+int sprawdz_nacisniecie_przycisku(int mysz_x, int mysz_y, struct Przycisk przyciski[]) {
     bool myszka_w_zakresie_x = false;
     bool myszka_w_zakresie_y = false;
 
-    for (int i = 0; i < 5; i++) {
+    for (int i = 0; i < ILOSC_PRZYCISKOW; i++) {
         myszka_w_zakresie_x = (mysz_x >= przyciski[i].x && mysz_x <= przyciski[i].x + przyciski[i].szerokosc);
         myszka_w_zakresie_y = (mysz_y >= przyciski[i].y && mysz_y <= przyciski[i].y + przyciski[i].wysokosc);
         if (myszka_w_zakresie_x && myszka_w_zakresie_y) {
-            printf("%s\n", przyciski[i].napis);
+            return i;
         }
     }
+
+    return -1;
 }
 
 int main()
@@ -138,7 +142,10 @@ int main()
                 break;
             case ALLEGRO_EVENT_MOUSE_BUTTON_DOWN:
                 if (event.mouse.button == 1) {
-                    sprawdz_nacisniecie_przycisku(event.mouse.x, event.mouse.y, przyciski);
+                    int nacisniety_przycisk = sprawdz_nacisniecie_przycisku(event.mouse.x, event.mouse.y, przyciski);
+                    if (nacisniety_przycisk != -1) {
+                        wybor_akcji(korzen, nacisniety_przycisk);
+                    }
                 }
                 break;
             case ALLEGRO_EVENT_DISPLAY_CLOSE:
@@ -323,37 +330,30 @@ void zapisz_drzewo(struct Trie *korzen, char slowa[], int index) {
     }
 }
 
-void wybor_akcji(struct Trie *korzen)
-{
-    int a;
-    char z[30];
-    do
+void wybor_akcji(struct Trie *korzen, int nacisniety_przycisk) {
+    switch(nacisniety_przycisk)
     {
-        puts("Wybierz akcje: \n1 - Wstaw do drzewa\n2 - Usun z drzewa\n3 - Wyszukaj w drzewie\n4 - Odczytaj drzewo z pliku\n5 - Zapisz drzewo do pliku");
-        scanf("%d", &a);
-    }
-    while((a < 0) && (a > 6));
-    switch(a)
-    {
-        case 1:
+        case 0:
             {
                 puts("Napisz co wstawic do drzewa: ");
-                scanf("%s", z);
-                wstaw_do_drzewa(korzen, z);
+                break;
+            }
+        case 1:
+            {
+                puts("Napisz co usunac z drzewa: ");
                 break;
             }
         case 2:
             {
-                puts("Napisz co usunac z drzewa: ");
-                scanf("%s", z);
-                usun_z_drzewa(&korzen, z);
+                puts("Napisz co wyszukac w drzewie: ");
                 break;
             }
         case 3:
             {
-                puts("Napisz co wyszukac w drzewie: ");
-                scanf("%s", z);
-                wyszukaj_z_drzewa(korzen, z);
+                if(zapisz_do_pliku(korzen) == true)
+                    puts("Operacja zakonczona sukcesem");
+                else
+                    puts("Operacja zakonczona niepowodzeniem");
                 break;
             }
         case 4:
@@ -364,16 +364,8 @@ void wybor_akcji(struct Trie *korzen)
                     puts("Operacja zakonczona niepowodzeniem");
                 break;
             }
-        case 5:
-            {
-                if(zapisz_do_pliku(korzen) == true)
-                    puts("Operacja zakonczona sukcesem");
-                else
-                    puts("Operacja zakonczona niepowodzeniem");
-                break;
-            }
         default:
-            puts("Blad wyboru akcji");
+            puts("Brak akcji dla przycisku.");
             break;
     }
 }

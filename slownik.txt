@@ -1,5 +1,3 @@
 dog
+koala
 kot
-koty
-psa
-psy
