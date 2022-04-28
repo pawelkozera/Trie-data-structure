@@ -45,9 +45,18 @@ void zapisz_drzewo(struct Trie *korzen, char slowa[], int index);
 void wybor_akcji(struct Trie *korzen);
 int narysuj_drzewo(struct Trie *korzen, int szerokosc, int wysokosc, ALLEGRO_FONT* font, int glebokosc, struct Kamera kamera);
 int ilosc_galezi(struct Trie *korzen);
-void narysuj_menu(ALLEGRO_FONT* font, struct Przycisk przycisk) {
-    al_draw_filled_rectangle(przycisk.x, przycisk.y, przycisk.x + przycisk.szerokosc, przycisk.y + przycisk.wysokosc, al_map_rgb(112, 110, 104));
-    al_draw_textf(font, al_map_rgb(255, 255, 255), przycisk.x + 10, przycisk.y + (przycisk.wysokosc/2), 0, przycisk.napis);
+void narysuj_menu(ALLEGRO_FONT* font, struct Przycisk przycisk);
+void sprawdz_nacisniecie_przycisku(int mysz_x, int mysz_y, struct Przycisk przyciski[]) {
+    bool myszka_w_zakresie_x = false;
+    bool myszka_w_zakresie_y = false;
+
+    for (int i = 0; i < 5; i++) {
+        myszka_w_zakresie_x = (mysz_x >= przyciski[i].x && mysz_x <= przyciski[i].x + przyciski[i].szerokosc);
+        myszka_w_zakresie_y = (mysz_y >= przyciski[i].y && mysz_y <= przyciski[i].y + przyciski[i].wysokosc);
+        if (myszka_w_zakresie_x && myszka_w_zakresie_y) {
+            printf("%s\n", przyciski[i].napis);
+        }
+    }
 }
 
 int main()
@@ -59,6 +68,8 @@ int main()
     struct Przycisk przycisk_znajdz = {220, WYSOKOSC_EKRANU - 60, 80, 40, "Znajdz"};
     struct Przycisk przycisk_zapisz = {320, WYSOKOSC_EKRANU - 60, 80, 40, "Zapisz"};
     struct Przycisk przycisk_wczytaj = {420, WYSOKOSC_EKRANU - 60, 80, 40, "Wczytaj"};
+
+    struct Przycisk przyciski[] = {przycisk_dodaj, przycisk_usun, przycisk_znajdz, przycisk_zapisz, przycisk_wczytaj};
 
     //wybor_akcji(korzen);
 
@@ -74,6 +85,7 @@ int main()
     //Allegro5
     al_init();
     al_install_keyboard();
+    al_install_mouse();
 
     ALLEGRO_TIMER* timer = al_create_timer(1.0 / 60.0);
     ALLEGRO_EVENT_QUEUE* queue = al_create_event_queue();
@@ -83,6 +95,7 @@ int main()
     al_register_event_source(queue, al_get_keyboard_event_source());
     al_register_event_source(queue, al_get_display_event_source(disp));
     al_register_event_source(queue, al_get_timer_event_source(timer));
+    al_register_event_source(queue, al_get_mouse_event_source());
 
     bool redraw = true;
     ALLEGRO_EVENT event;
@@ -123,7 +136,11 @@ int main()
             case ALLEGRO_EVENT_KEY_UP:
                 key[event.keyboard.keycode] &= KEY_RELEASED;
                 break;
-
+            case ALLEGRO_EVENT_MOUSE_BUTTON_DOWN:
+                if (event.mouse.button == 1) {
+                    sprawdz_nacisniecie_przycisku(event.mouse.x, event.mouse.y, przyciski);
+                }
+                break;
             case ALLEGRO_EVENT_DISPLAY_CLOSE:
                 zakoncz_program = true;
                 break;
@@ -412,4 +429,9 @@ int ilosc_galezi(struct Trie *korzen) {
     }
 
     return ilosc;
+}
+
+void narysuj_menu(ALLEGRO_FONT* font, struct Przycisk przycisk) {
+    al_draw_filled_rectangle(przycisk.x, przycisk.y, przycisk.x + przycisk.szerokosc, przycisk.y + przycisk.wysokosc, al_map_rgb(112, 110, 104));
+    al_draw_textf(font, al_map_rgb(255, 255, 255), przycisk.x + 10, przycisk.y + (przycisk.wysokosc/2), 0, przycisk.napis);
 }
