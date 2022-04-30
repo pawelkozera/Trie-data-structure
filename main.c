@@ -34,6 +34,10 @@ struct Przycisk {
     char napis[10];
 };
 
+struct Komunikaty {
+    char komunikat[50];
+};
+
 //Prototypy funkcji
 struct Trie* stworz_nowe_drzewo_trie();
 void wstaw_do_drzewa(struct Trie *korzen, char slowo[]);
@@ -44,17 +48,22 @@ bool nie_ma_dzieci(struct Trie *korzen);
 bool odczytaj_z_pliku_i_wstaw_do_drzewa(struct Trie *korzen, char nazwa_pliku[]);
 bool zapisz_do_pliku(struct Trie *korzen, char nazwa_pliku[]);
 void zapisz_drzewo(struct Trie *korzen, char slowa[], int index, char nazwa_pliku[]);
-void wybor_akcji(struct Trie *korzen, int nacisniety_przycisk, char wpisywane_slowo[]);
+void wybor_akcji(struct Trie *korzen, int nacisniety_przycisk, char wpisywane_slowo[], struct Komunikaty *komunikaty);
 int narysuj_drzewo(struct Trie *korzen, int szerokosc, int wysokosc, ALLEGRO_FONT* font, int glebokosc, struct Kamera kamera);
 int ilosc_galezi(struct Trie *korzen);
 void narysuj_menu(ALLEGRO_FONT* font, struct Przycisk przycisk);
+void narysuj_komunikat(ALLEGRO_FONT*font, struct Komunikaty komunikaty, struct Przycisk przycisk_wczytaj);
 void narysuj_wpisywanie(ALLEGRO_FONT* font, char wpisywane_slowo[]);
 int sprawdz_nacisniecie_przycisku(int mysz_x, int mysz_y, struct Przycisk przyciski[]);
 
 int main()
 {
     struct Trie* korzen = stworz_nowe_drzewo_trie();
+
     struct Kamera kamera = {0, 0};
+
+    struct Komunikaty komunikaty = {0, ""};
+
     struct Przycisk przycisk_dodaj = {20, WYSOKOSC_EKRANU - 60, 80, 40, "Dodaj"};
     struct Przycisk przycisk_usun = {120, WYSOKOSC_EKRANU - 60, 80, 40, "Usun"};
     struct Przycisk przycisk_znajdz = {220, WYSOKOSC_EKRANU - 60, 80, 40, "Znajdz"};
@@ -71,8 +80,6 @@ int main()
     wstaw_do_drzewa(korzen, z);
     wstaw_do_drzewa(korzen, x);
     wstaw_do_drzewa(korzen, c);
-
-
 
     //Allegro5
     al_init();
@@ -138,7 +145,7 @@ int main()
                 if (!wyswietlanie_drzewa) {
                     if (key[ALLEGRO_KEY_ENTER]) {
                         if (nacisniety_przycisk > -1) {
-                            wybor_akcji(korzen, nacisniety_przycisk, wpisywane_slowo);
+                            wybor_akcji(korzen, nacisniety_przycisk, wpisywane_slowo, &komunikaty);
                         }
                         wyswietlanie_drzewa = true;
                         wpisywane_slowo[0] = '\0';
@@ -190,6 +197,7 @@ int main()
                 narysuj_menu(font, przycisk_znajdz);
                 narysuj_menu(font, przycisk_wczytaj);
                 narysuj_menu(font, przycisk_zapisz);
+                narysuj_komunikat(font, komunikaty, przycisk_wczytaj);
             }
             else {
                 narysuj_wpisywanie(font, wpisywane_slowo);
@@ -307,7 +315,7 @@ int wyszukaj_z_drzewa(struct Trie *korzen, char *slowo) {
 
 bool odczytaj_z_pliku_i_wstaw_do_drzewa(struct Trie *korzen, char nazwa_pliku[]) {
     FILE *plik;
-    plik = fopen("slownik.txt", "r");
+    plik = fopen(nazwa_pliku, "r");
 
     if (plik == NULL) {
         exit(1);
@@ -352,38 +360,52 @@ void zapisz_drzewo(struct Trie *korzen, char slowa[], int index, char nazwa_plik
     }
 }
 
-void wybor_akcji(struct Trie *korzen, int nacisniety_przycisk, char wpisywane_slowo[]) {
+void wybor_akcji(struct Trie *korzen, int nacisniety_przycisk, char wpisywane_slowo[], struct Komunikaty *komunikaty) {
     switch(nacisniety_przycisk)
     {
         case 0:
             {
                 wstaw_do_drzewa(korzen, wpisywane_slowo);
+                char bufor[50] = "Dodano slowo: ";
+                strncat(bufor, wpisywane_slowo, strlen(wpisywane_slowo));
+                strcpy(komunikaty->komunikat, bufor);
                 break;
             }
         case 1:
             {
                 usun_z_drzewa(korzen, wpisywane_slowo, 0);
+                char bufor[50] = "Usunieto slowo: ";
+                strncat(bufor, wpisywane_slowo, strlen(wpisywane_slowo));
+                strcpy(komunikaty->komunikat, bufor);
                 break;
             }
         case 2:
             {
-                if (wyszukaj_z_drzewa(korzen, wpisywane_slowo)) { // nie dokonczone brak wyswietlania komunikatu czy znaleziono
-                    puts("znaleziono");
+                if (wyszukaj_z_drzewa(korzen, wpisywane_slowo)) {
+                    char bufor[50] = "Znaleziono slowo: ";
+                    strncat(bufor, wpisywane_slowo, strlen(wpisywane_slowo));
+                    strcpy(komunikaty->komunikat, bufor);
                 }
                 break;
             }
         case 3:
             {
-                if(zapisz_do_pliku(korzen, wpisywane_slowo) == true)
-                    puts("Operacja zakonczona sukcesem");
+                if(zapisz_do_pliku(korzen, wpisywane_slowo) == true) {
+                    char bufor[50] = "Zapisano do: ";
+                    strncat(bufor, wpisywane_slowo, strlen(wpisywane_slowo));
+                    strcpy(komunikaty->komunikat, bufor);
+                }
                 else
                     puts("Operacja zakonczona niepowodzeniem");
                 break;
             }
         case 4:
             {
-                if(odczytaj_z_pliku_i_wstaw_do_drzewa(korzen, wpisywane_slowo) == true) // nie dziala, trzeba wyczyscisc drzewo przed dodaniem elementow z pliku
-                    puts("Operacja zakonczona sukcesem");
+                if(odczytaj_z_pliku_i_wstaw_do_drzewa(korzen, wpisywane_slowo) == true) {// nie dziala, trzeba wyczyscisc drzewo przed dodaniem elementow z pliku
+                    char bufor[50] = "Wczytano z: ";
+                    strncat(bufor, wpisywane_slowo, strlen(wpisywane_slowo));
+                    strcpy(komunikaty->komunikat, bufor);
+                }
                 else
                     puts("Operacja zakonczona niepowodzeniem");
                 break;
@@ -450,6 +472,10 @@ int ilosc_galezi(struct Trie *korzen) {
 void narysuj_menu(ALLEGRO_FONT* font, struct Przycisk przycisk) {
     al_draw_filled_rectangle(przycisk.x, przycisk.y, przycisk.x + przycisk.szerokosc, przycisk.y + przycisk.wysokosc, al_map_rgb(112, 110, 104));
     al_draw_textf(font, al_map_rgb(255, 255, 255), przycisk.x + 10, przycisk.y + (przycisk.wysokosc/2), 0, przycisk.napis);
+}
+
+void narysuj_komunikat(ALLEGRO_FONT*font, struct Komunikaty komunikaty, struct Przycisk przycisk_wczytaj) {
+    al_draw_textf(font, al_map_rgb(255, 255, 255), przycisk_wczytaj.x + przycisk_wczytaj.szerokosc + 20, przycisk_wczytaj.y + (przycisk_wczytaj.wysokosc/2), 0, komunikaty.komunikat);
 }
 
 void narysuj_wpisywanie(ALLEGRO_FONT* font, char wpisywane_slowo[]) {
