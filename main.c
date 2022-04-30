@@ -39,8 +39,8 @@ struct Trie* stworz_nowe_drzewo_trie();
 void wstaw_do_drzewa(struct Trie *korzen, char slowo[]);
 int wyszukaj_z_drzewa(struct Trie *korzen, char *slowo);
 void zamien_na_male_litery(char slowo[]);
-int usun_z_drzewa(struct Trie **aktualny_wezel, char *slowo);
-int ma_pod_wezly(struct Trie *aktualny_wezel);
+struct Trie* usun_z_drzewa(struct Trie *korzen, char slowo[], int glebokosc);
+bool nie_ma_dzieci(struct Trie *korzen);
 bool odczytaj_z_pliku_i_wstaw_do_drzewa(struct Trie *korzen, char nazwa_pliku[]);
 bool zapisz_do_pliku(struct Trie *korzen, char nazwa_pliku[]);
 void zapisz_drzewo(struct Trie *korzen, char slowa[], int index, char nazwa_pliku[]);
@@ -48,38 +48,8 @@ void wybor_akcji(struct Trie *korzen, int nacisniety_przycisk, char wpisywane_sl
 int narysuj_drzewo(struct Trie *korzen, int szerokosc, int wysokosc, ALLEGRO_FONT* font, int glebokosc, struct Kamera kamera);
 int ilosc_galezi(struct Trie *korzen);
 void narysuj_menu(ALLEGRO_FONT* font, struct Przycisk przycisk);
-void narysuj_wpisywanie(ALLEGRO_FONT* font, char wpisywane_slowo[]) {
-    al_draw_textf(font, al_map_rgb(255, 255, 255), SZEROKOSC_EKRANU/3, WYSOKOSC_EKRANU/3, 0, "Wpisz slowo");
-    al_draw_textf(font, al_map_rgb(255, 255, 255), SZEROKOSC_EKRANU/3, WYSOKOSC_EKRANU/2, 0, wpisywane_slowo);
-    al_draw_textf(font, al_map_rgb(255, 255, 255), SZEROKOSC_EKRANU/3, WYSOKOSC_EKRANU/1.5, 0, "Zaakceptuj enterem");
-}
-
-int sprawdz_nacisniecie_przycisku(int mysz_x, int mysz_y, struct Przycisk przyciski[]) {
-    bool myszka_w_zakresie_x = false;
-    bool myszka_w_zakresie_y = false;
-
-    for (int i = 0; i < ILOSC_PRZYCISKOW; i++) {
-        myszka_w_zakresie_x = (mysz_x >= przyciski[i].x && mysz_x <= przyciski[i].x + przyciski[i].szerokosc);
-        myszka_w_zakresie_y = (mysz_y >= przyciski[i].y && mysz_y <= przyciski[i].y + przyciski[i].wysokosc);
-        if (myszka_w_zakresie_x && myszka_w_zakresie_y) {
-            return i;
-        }
-    }
-
-    return -1;
-}
-
-void wyczysc(struct Trie *korzen) {
-    if (korzen == NULL) {
-        return;
-    }
-    for (int i = 0; i < LITERY_ALFABETU; i++) {
-        if (korzen->litery[i] != NULL) {
-            wyczysc(korzen->litery[i]);
-            free(korzen);
-        }
-    }
-}
+void narysuj_wpisywanie(ALLEGRO_FONT* font, char wpisywane_slowo[]);
+int sprawdz_nacisniecie_przycisku(int mysz_x, int mysz_y, struct Przycisk przyciski[]);
 
 int main()
 {
@@ -97,11 +67,12 @@ int main()
     char z[] = "dog";
     char x[] = "kot";
     char c[] = "koala";
-    wyczysc(korzen);
 
     wstaw_do_drzewa(korzen, z);
     wstaw_do_drzewa(korzen, x);
     wstaw_do_drzewa(korzen, c);
+
+
 
     //Allegro5
     al_init();
@@ -278,6 +249,44 @@ void zamien_na_male_litery(char slowo[]) {
     }
 }
 
+struct Trie* usun_z_drzewa(struct Trie *korzen, char slowo[], int glebokosc) {
+    if (korzen == NULL) {
+        return NULL;
+    }
+
+    if (strlen(slowo) == glebokosc) {
+        if (korzen->jest_lisciem) {
+            korzen->jest_lisciem = 0;
+        }
+
+        if (nie_ma_dzieci(korzen)) {
+            free(korzen);
+            korzen = NULL;
+        }
+
+        return korzen;
+    }
+
+    int index = slowo[glebokosc] - 'a';
+    korzen->litery[index] = usun_z_drzewa(korzen->litery[index], slowo, glebokosc + 1);
+
+    if (nie_ma_dzieci(korzen) && korzen->jest_lisciem == 0) {
+        free(korzen);
+        korzen = NULL;
+    }
+
+    return korzen;
+}
+
+bool nie_ma_dzieci(struct Trie *korzen) {
+    for (int i = 0; i < LITERY_ALFABETU; i++) {
+        if (korzen->litery[i]) {
+            return false;
+        }
+    }
+    return true;
+}
+
 // zwraca 1 jestli slowo jest w drzewie, 0 jesli go nie ma
 int wyszukaj_z_drzewa(struct Trie *korzen, char *slowo) {
     if (korzen == NULL) {
@@ -294,49 +303,6 @@ int wyszukaj_z_drzewa(struct Trie *korzen, char *slowo) {
     }
 
     return aktualny_wezel->jest_lisciem;
-}
-
-int ma_pod_wezly(struct Trie *aktualny_wezel) {
-    for (int i = 0; i < LITERY_ALFABETU; i++) {
-        if (aktualny_wezel->litery[i]) {
-            return 1; // znaleziono
-        }
-    }
-
-    return 0;
-}
-
-int usun_z_drzewa(struct Trie **aktualny_wezel, char *slowo) {
-    if (*aktualny_wezel == NULL) {
-        return 0; // jeœli drzewo jest puste zwracamy 0
-    }
-
-    if (*slowo) {
-        if ((*aktualny_wezel)->litery[*slowo - 'a'] != NULL && usun_z_drzewa(&((*aktualny_wezel)->litery[*slowo - 'a']), slowo + 1) && (*aktualny_wezel)->jest_lisciem == 0) {
-            if (!ma_pod_wezly(*aktualny_wezel)) {
-                free(*aktualny_wezel);
-                (*aktualny_wezel) == NULL;
-                return 1;
-            }
-            else {
-                return 0;
-            }
-        }
-    }
-
-    if (*slowo == '\0' && (*aktualny_wezel)->jest_lisciem) {
-        if (!ma_pod_wezly(*aktualny_wezel)) {
-            free(*aktualny_wezel);
-            (*aktualny_wezel) = NULL;
-            return 1;
-        }
-        else {
-            (*aktualny_wezel)->jest_lisciem = 0;
-            return 0;
-        }
-    }
-
-    return 0;
 }
 
 bool odczytaj_z_pliku_i_wstaw_do_drzewa(struct Trie *korzen, char nazwa_pliku[]) {
@@ -396,7 +362,7 @@ void wybor_akcji(struct Trie *korzen, int nacisniety_przycisk, char wpisywane_sl
             }
         case 1:
             {
-                usun_z_drzewa(korzen, "dog"); // nie dziala
+                usun_z_drzewa(korzen, wpisywane_slowo, 0);
                 break;
             }
         case 2:
@@ -484,4 +450,25 @@ int ilosc_galezi(struct Trie *korzen) {
 void narysuj_menu(ALLEGRO_FONT* font, struct Przycisk przycisk) {
     al_draw_filled_rectangle(przycisk.x, przycisk.y, przycisk.x + przycisk.szerokosc, przycisk.y + przycisk.wysokosc, al_map_rgb(112, 110, 104));
     al_draw_textf(font, al_map_rgb(255, 255, 255), przycisk.x + 10, przycisk.y + (przycisk.wysokosc/2), 0, przycisk.napis);
+}
+
+void narysuj_wpisywanie(ALLEGRO_FONT* font, char wpisywane_slowo[]) {
+    al_draw_textf(font, al_map_rgb(255, 255, 255), SZEROKOSC_EKRANU/3, WYSOKOSC_EKRANU/3, 0, "Wpisz slowo");
+    al_draw_textf(font, al_map_rgb(255, 255, 255), SZEROKOSC_EKRANU/3, WYSOKOSC_EKRANU/2, 0, wpisywane_slowo);
+    al_draw_textf(font, al_map_rgb(255, 255, 255), SZEROKOSC_EKRANU/3, WYSOKOSC_EKRANU/1.5, 0, "Zaakceptuj enterem");
+}
+
+int sprawdz_nacisniecie_przycisku(int mysz_x, int mysz_y, struct Przycisk przyciski[]) {
+    bool myszka_w_zakresie_x = false;
+    bool myszka_w_zakresie_y = false;
+
+    for (int i = 0; i < ILOSC_PRZYCISKOW; i++) {
+        myszka_w_zakresie_x = (mysz_x >= przyciski[i].x && mysz_x <= przyciski[i].x + przyciski[i].szerokosc);
+        myszka_w_zakresie_y = (mysz_y >= przyciski[i].y && mysz_y <= przyciski[i].y + przyciski[i].wysokosc);
+        if (myszka_w_zakresie_x && myszka_w_zakresie_y) {
+            return i;
+        }
+    }
+
+    return -1;
 }
