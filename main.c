@@ -13,6 +13,7 @@
 #define KEY_SEEN     1
 #define KEY_RELEASED 2
 #define ILOSC_PRZYCISKOW 5
+#define DLUGOSC_WPISANEGO_SLOWA 50
 
 /*
     Dokumentacja Allegro5
@@ -40,13 +41,18 @@ int wyszukaj_z_drzewa(struct Trie *korzen, char *slowo);
 void zamien_na_male_litery(char slowo[]);
 int usun_z_drzewa(struct Trie **aktualny_wezel, char *slowo);
 int ma_pod_wezly(struct Trie *aktualny_wezel);
-bool odczytaj_z_pliku_i_wstaw_do_drzewa(struct Trie *korzen);
-bool zapisz_do_pliku(struct Trie *korzen);
-void zapisz_drzewo(struct Trie *korzen, char slowa[], int index);
-void wybor_akcji(struct Trie *korzen, int nacisniety_przycisk);
+bool odczytaj_z_pliku_i_wstaw_do_drzewa(struct Trie *korzen, char nazwa_pliku[]);
+bool zapisz_do_pliku(struct Trie *korzen, char nazwa_pliku[]);
+void zapisz_drzewo(struct Trie *korzen, char slowa[], int index, char nazwa_pliku[]);
+void wybor_akcji(struct Trie *korzen, int nacisniety_przycisk, char wpisywane_slowo[]);
 int narysuj_drzewo(struct Trie *korzen, int szerokosc, int wysokosc, ALLEGRO_FONT* font, int glebokosc, struct Kamera kamera);
 int ilosc_galezi(struct Trie *korzen);
 void narysuj_menu(ALLEGRO_FONT* font, struct Przycisk przycisk);
+void narysuj_wpisywanie(ALLEGRO_FONT* font, char wpisywane_slowo[]) {
+    al_draw_textf(font, al_map_rgb(255, 255, 255), SZEROKOSC_EKRANU/3, WYSOKOSC_EKRANU/3, 0, "Wpisz slowo");
+    al_draw_textf(font, al_map_rgb(255, 255, 255), SZEROKOSC_EKRANU/3, WYSOKOSC_EKRANU/2, 0, wpisywane_slowo);
+    al_draw_textf(font, al_map_rgb(255, 255, 255), SZEROKOSC_EKRANU/3, WYSOKOSC_EKRANU/1.5, 0, "Zaakceptuj enterem");
+}
 
 int sprawdz_nacisniecie_przycisku(int mysz_x, int mysz_y, struct Przycisk przyciski[]) {
     bool myszka_w_zakresie_x = false;
@@ -63,6 +69,18 @@ int sprawdz_nacisniecie_przycisku(int mysz_x, int mysz_y, struct Przycisk przyci
     return -1;
 }
 
+void wyczysc(struct Trie *korzen) {
+    if (korzen == NULL) {
+        return;
+    }
+    for (int i = 0; i < LITERY_ALFABETU; i++) {
+        if (korzen->litery[i] != NULL) {
+            wyczysc(korzen->litery[i]);
+            free(korzen);
+        }
+    }
+}
+
 int main()
 {
     struct Trie* korzen = stworz_nowe_drzewo_trie();
@@ -75,12 +93,11 @@ int main()
 
     struct Przycisk przyciski[] = {przycisk_dodaj, przycisk_usun, przycisk_znajdz, przycisk_zapisz, przycisk_wczytaj};
 
-    //wybor_akcji(korzen);
-
     // testowanie działania
     char z[] = "dog";
     char x[] = "kot";
     char c[] = "koala";
+    wyczysc(korzen);
 
     wstaw_do_drzewa(korzen, z);
     wstaw_do_drzewa(korzen, x);
@@ -111,6 +128,10 @@ int main()
     unsigned char key[ALLEGRO_KEY_MAX];
     memset(key, 0, sizeof(key));
 
+    char wpisywane_slowo[DLUGOSC_WPISANEGO_SLOWA] = "";
+    int nacisniety_przycisk = -1;
+
+    bool wyswietlanie_drzewa = true;
     bool zakoncz_program = false;
     while(1) {
         al_wait_for_event(queue, &event);
@@ -137,17 +158,47 @@ int main()
             case ALLEGRO_EVENT_KEY_DOWN:
                 key[event.keyboard.keycode] = KEY_SEEN | KEY_RELEASED;
                 break;
+
             case ALLEGRO_EVENT_KEY_UP:
                 key[event.keyboard.keycode] &= KEY_RELEASED;
                 break;
-            case ALLEGRO_EVENT_MOUSE_BUTTON_DOWN:
-                if (event.mouse.button == 1) {
-                    int nacisniety_przycisk = sprawdz_nacisniecie_przycisku(event.mouse.x, event.mouse.y, przyciski);
-                    if (nacisniety_przycisk != -1) {
-                        wybor_akcji(korzen, nacisniety_przycisk);
+
+            case ALLEGRO_EVENT_KEY_CHAR: // wpisywanie szukanej wartosci
+                if (!wyswietlanie_drzewa) {
+                    if (key[ALLEGRO_KEY_ENTER]) {
+                        if (nacisniety_przycisk > -1) {
+                            wybor_akcji(korzen, nacisniety_przycisk, wpisywane_slowo);
+                        }
+                        wyswietlanie_drzewa = true;
+                        wpisywane_slowo[0] = '\0';
+                        break;
+                    }
+                    else if (key[ALLEGRO_KEY_BACKSPACE]) {
+                        wpisywane_slowo[strlen(wpisywane_slowo) - 1] = '\0';
+                        printf("%s\n", wpisywane_slowo);
+                        break;
+                    }
+                    else {
+                        int znak_kod = event.keyboard.unichar;
+                        if (znak_kod >= 97 && znak_kod <= 122 || znak_kod == 46) {
+                            char znak = znak_kod;
+                            strncat(wpisywane_slowo, &znak, 1);
+                            printf("%s\n", wpisywane_slowo);
+                        }
+                        break;
                     }
                 }
                 break;
+
+            case ALLEGRO_EVENT_MOUSE_BUTTON_DOWN:
+                if (event.mouse.button == 1 && wyswietlanie_drzewa) {
+                    nacisniety_przycisk = sprawdz_nacisniecie_przycisku(event.mouse.x, event.mouse.y, przyciski);
+                    if (nacisniety_przycisk != -1) {
+                        wyswietlanie_drzewa = false;
+                    }
+                }
+                break;
+
             case ALLEGRO_EVENT_DISPLAY_CLOSE:
                 zakoncz_program = true;
                 break;
@@ -161,12 +212,17 @@ int main()
         {
             al_clear_to_color(al_map_rgb(0, 0, 0));
 
-            narysuj_drzewo(korzen, SREDNICA_OKREGU + 10, SREDNICA_OKREGU + 120, font, 0, kamera);
-            narysuj_menu(font, przycisk_dodaj);
-            narysuj_menu(font, przycisk_usun);
-            narysuj_menu(font, przycisk_znajdz);
-            narysuj_menu(font, przycisk_wczytaj);
-            narysuj_menu(font, przycisk_zapisz);
+            if (wyswietlanie_drzewa) {
+                narysuj_drzewo(korzen, SREDNICA_OKREGU + 10, SREDNICA_OKREGU + 120, font, 0, kamera);
+                narysuj_menu(font, przycisk_dodaj);
+                narysuj_menu(font, przycisk_usun);
+                narysuj_menu(font, przycisk_znajdz);
+                narysuj_menu(font, przycisk_wczytaj);
+                narysuj_menu(font, przycisk_zapisz);
+            }
+            else {
+                narysuj_wpisywanie(font, wpisywane_slowo);
+            }
 
             al_flip_display();
 
@@ -283,7 +339,7 @@ int usun_z_drzewa(struct Trie **aktualny_wezel, char *slowo) {
     return 0;
 }
 
-bool odczytaj_z_pliku_i_wstaw_do_drzewa(struct Trie *korzen) {
+bool odczytaj_z_pliku_i_wstaw_do_drzewa(struct Trie *korzen, char nazwa_pliku[]) {
     FILE *plik;
     plik = fopen("slownik.txt", "r");
 
@@ -301,22 +357,22 @@ bool odczytaj_z_pliku_i_wstaw_do_drzewa(struct Trie *korzen) {
     return 1;
 }
 
-bool zapisz_do_pliku(struct Trie *korzen) {
+bool zapisz_do_pliku(struct Trie *korzen, char nazwa_pliku[]) {
     FILE *plik;
-    plik = fopen("slownik.txt", "w");
+    plik = fopen(nazwa_pliku, "w");
     fclose(plik);
 
     char slowa[30];
-    zapisz_drzewo(korzen, slowa, 0);
+    zapisz_drzewo(korzen, slowa, 0, nazwa_pliku);
     return 1;
 }
 
-void zapisz_drzewo(struct Trie *korzen, char slowa[], int index) {
+void zapisz_drzewo(struct Trie *korzen, char slowa[], int index, char nazwa_pliku[]) {
     if (korzen != NULL) {
         if (korzen->jest_lisciem) {
             slowa[index] = '\0';
             FILE *plik;
-            plik = fopen("slownik.txt", "a");
+            plik = fopen(nazwa_pliku, "a");
             fprintf(plik, "%s\n", slowa);
 
             fclose(plik);
@@ -324,33 +380,35 @@ void zapisz_drzewo(struct Trie *korzen, char slowa[], int index) {
         for (int i = 0; i < LITERY_ALFABETU; i++) {
             if (korzen->litery[i] != NULL) {
                 slowa[index] = 'a' + i;
-                zapisz_drzewo(korzen->litery[i], slowa, index + 1);
+                zapisz_drzewo(korzen->litery[i], slowa, index + 1, nazwa_pliku);
             }
         }
     }
 }
 
-void wybor_akcji(struct Trie *korzen, int nacisniety_przycisk) {
+void wybor_akcji(struct Trie *korzen, int nacisniety_przycisk, char wpisywane_slowo[]) {
     switch(nacisniety_przycisk)
     {
         case 0:
             {
-                puts("Napisz co wstawic do drzewa: ");
+                wstaw_do_drzewa(korzen, wpisywane_slowo);
                 break;
             }
         case 1:
             {
-                puts("Napisz co usunac z drzewa: ");
+                usun_z_drzewa(korzen, "dog"); // nie dziala
                 break;
             }
         case 2:
             {
-                puts("Napisz co wyszukac w drzewie: ");
+                if (wyszukaj_z_drzewa(korzen, wpisywane_slowo)) { // nie dokonczone brak wyswietlania komunikatu czy znaleziono
+                    puts("znaleziono");
+                }
                 break;
             }
         case 3:
             {
-                if(zapisz_do_pliku(korzen) == true)
+                if(zapisz_do_pliku(korzen, wpisywane_slowo) == true)
                     puts("Operacja zakonczona sukcesem");
                 else
                     puts("Operacja zakonczona niepowodzeniem");
@@ -358,7 +416,7 @@ void wybor_akcji(struct Trie *korzen, int nacisniety_przycisk) {
             }
         case 4:
             {
-                if(odczytaj_z_pliku_i_wstaw_do_drzewa(korzen) == true)
+                if(odczytaj_z_pliku_i_wstaw_do_drzewa(korzen, wpisywane_slowo) == true) // nie dziala, trzeba wyczyscisc drzewo przed dodaniem elementow z pliku
                     puts("Operacja zakonczona sukcesem");
                 else
                     puts("Operacja zakonczona niepowodzeniem");

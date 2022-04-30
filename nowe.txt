@@ -1,5 +1,4 @@
 dog
 koala
 kot
-mega
-rock
+nowe
