@@ -5,6 +5,8 @@
 #include <allegro5/allegro_font.h>
 #include <allegro5/allegro_primitives.h>
 #include <string.h>
+#include <sys/time.h>
+#include "windows.h"
 
 #define LITERY_ALFABETU 26
 #define SZEROKOSC_EKRANU 800
@@ -38,23 +40,29 @@ struct Komunikaty {
     char komunikat[50];
 };
 
+//struct timeval begin, end;
+LARGE_INTEGER begin, end;
+
 //Prototypy funkcji
 struct Trie* stworz_nowe_drzewo_trie();
 void wstaw_do_drzewa(struct Trie *korzen, char slowo[]);
 int wyszukaj_z_drzewa(struct Trie *korzen, char *slowo);
 void zamien_na_male_litery(char slowo[]);
 struct Trie* usun_z_drzewa(struct Trie *korzen, char slowo[], int glebokosc);
+struct Trie* usun_przed_wczytaniem(struct Trie *korzen);
 bool nie_ma_dzieci(struct Trie *korzen);
-bool odczytaj_z_pliku_i_wstaw_do_drzewa(struct Trie *korzen, char nazwa_pliku[]);
+bool odczytaj_z_pliku_i_wstaw_do_drzewa(struct Trie **korzen, char nazwa_pliku[]);
 bool zapisz_do_pliku(struct Trie *korzen, char nazwa_pliku[]);
 void zapisz_drzewo(struct Trie *korzen, char slowa[], int index, char nazwa_pliku[]);
-void wybor_akcji(struct Trie *korzen, int nacisniety_przycisk, char wpisywane_slowo[], struct Komunikaty *komunikaty);
+void wybor_akcji(struct Trie **korzen, int nacisniety_przycisk, char wpisywane_slowo[], struct Komunikaty *komunikaty);
 int narysuj_drzewo(struct Trie *korzen, int szerokosc, int wysokosc, ALLEGRO_FONT* font, int glebokosc, struct Kamera kamera);
 int ilosc_galezi(struct Trie *korzen);
 void narysuj_menu(ALLEGRO_FONT* font, struct Przycisk przycisk);
 void narysuj_komunikat(ALLEGRO_FONT*font, struct Komunikaty komunikaty, struct Przycisk przycisk_wczytaj);
 void narysuj_wpisywanie(ALLEGRO_FONT* font, char wpisywane_slowo[]);
 int sprawdz_nacisniecie_przycisku(int mysz_x, int mysz_y, struct Przycisk przyciski[]);
+void czas_start();
+double czas_stop();
 
 int main()
 {
@@ -145,7 +153,7 @@ int main()
                 if (!wyswietlanie_drzewa) {
                     if (key[ALLEGRO_KEY_ENTER]) {
                         if (nacisniety_przycisk > -1) {
-                            wybor_akcji(korzen, nacisniety_przycisk, wpisywane_slowo, &komunikaty);
+                            wybor_akcji(&korzen, nacisniety_przycisk, wpisywane_slowo, &komunikaty);
                         }
                         wyswietlanie_drzewa = true;
                         wpisywane_slowo[0] = '\0';
@@ -286,6 +294,17 @@ struct Trie* usun_z_drzewa(struct Trie *korzen, char slowo[], int glebokosc) {
     return korzen;
 }
 
+struct Trie* usun_przed_wczytaniem(struct Trie *korzen) {
+    for (int i = 0; i < LITERY_ALFABETU; i++) {
+        if (korzen->litery[i]) {
+            usun_przed_wczytaniem(korzen->litery[i]);
+            printf("%c", i+'a');
+        }
+    }
+    free(korzen);
+    return NULL;
+};
+
 bool nie_ma_dzieci(struct Trie *korzen) {
     for (int i = 0; i < LITERY_ALFABETU; i++) {
         if (korzen->litery[i]) {
@@ -295,7 +314,7 @@ bool nie_ma_dzieci(struct Trie *korzen) {
     return true;
 }
 
-// zwraca 1 jestli slowo jest w drzewie, 0 jesli go nie ma
+// zwraca 1 jesli slowo jest w drzewie, 0 jesli go nie ma
 int wyszukaj_z_drzewa(struct Trie *korzen, char *slowo) {
     if (korzen == NULL) {
         return 0; // drzewo jest puste
@@ -313,7 +332,7 @@ int wyszukaj_z_drzewa(struct Trie *korzen, char *slowo) {
     return aktualny_wezel->jest_lisciem;
 }
 
-bool odczytaj_z_pliku_i_wstaw_do_drzewa(struct Trie *korzen, char nazwa_pliku[]) {
+bool odczytaj_z_pliku_i_wstaw_do_drzewa(struct Trie **korzen, char nazwa_pliku[]) {
     FILE *plik;
     plik = fopen(nazwa_pliku, "r");
 
@@ -322,9 +341,12 @@ bool odczytaj_z_pliku_i_wstaw_do_drzewa(struct Trie *korzen, char nazwa_pliku[])
     }
 
     char linia[40];
+    memset(linia, 0, 40);
     while (fgets(linia, sizeof(linia), plik)) {
         linia[strcspn(linia, "\n")] = 0; //usuwa znak nowej lini z ciagu znakow
-        wstaw_do_drzewa(korzen, linia);
+        wstaw_do_drzewa(*korzen, linia);
+        printf("\n%s", linia);
+        memset(linia, 0, 40);
     }
 
     fclose(plik);
@@ -360,39 +382,67 @@ void zapisz_drzewo(struct Trie *korzen, char slowa[], int index, char nazwa_plik
     }
 }
 
-void wybor_akcji(struct Trie *korzen, int nacisniety_przycisk, char wpisywane_slowo[], struct Komunikaty *komunikaty) {
+void wybor_akcji(struct Trie **korzen, int nacisniety_przycisk, char wpisywane_slowo[], struct Komunikaty *komunikaty) {
     switch(nacisniety_przycisk)
     {
         case 0:
             {
-                wstaw_do_drzewa(korzen, wpisywane_slowo);
+                wstaw_do_drzewa(*korzen, wpisywane_slowo);
+                czas_start();
                 char bufor[50] = "Dodano slowo: ";
                 strncat(bufor, wpisywane_slowo, strlen(wpisywane_slowo));
+                char napis[10] = " Czas: ";
+                strncat(bufor, napis, 8);
+                char e[10];
+                double elapsed = czas_stop();
+                sprintf(e, "%lf", elapsed);
+                strncat(bufor, e, 10);
                 strcpy(komunikaty->komunikat, bufor);
                 break;
             }
         case 1:
             {
-                usun_z_drzewa(korzen, wpisywane_slowo, 0);
+                usun_z_drzewa(*korzen, wpisywane_slowo, 0);
+                czas_start();
                 char bufor[50] = "Usunieto slowo: ";
                 strncat(bufor, wpisywane_slowo, strlen(wpisywane_slowo));
+                char napis[10] = " Czas: ";
+                strncat(bufor, napis, 8);
+                char e[10];
+                double elapsed = czas_stop();
+                sprintf(e, "%lf", elapsed);
+                strncat(bufor, e, 10);
                 strcpy(komunikaty->komunikat, bufor);
                 break;
             }
         case 2:
             {
-                if (wyszukaj_z_drzewa(korzen, wpisywane_slowo)) {
+                if (wyszukaj_z_drzewa(*korzen, wpisywane_slowo)) {
+                    czas_start();
                     char bufor[50] = "Znaleziono slowo: ";
                     strncat(bufor, wpisywane_slowo, strlen(wpisywane_slowo));
+                    char napis[10] = " Czas: ";
+                    strncat(bufor, napis, 8);
+                    char e[10];
+                    double elapsed = czas_stop();
+                    sprintf(e, "%lf", elapsed);
+                    strncat(bufor, e, 10);
                     strcpy(komunikaty->komunikat, bufor);
                 }
                 break;
             }
         case 3:
             {
-                if(zapisz_do_pliku(korzen, wpisywane_slowo) == true) {
+                if(zapisz_do_pliku(*korzen, wpisywane_slowo) == true) {
+                    czas_start();
                     char bufor[50] = "Zapisano do: ";
                     strncat(bufor, wpisywane_slowo, strlen(wpisywane_slowo));
+                    char napis[10] = " Czas: ";
+                    strncat(bufor, napis, 8);
+                    char e[10];
+                    double elapsed = czas_stop();
+                    sprintf(e, "%lf", elapsed);
+                    strncat(bufor, e, 10);
                     strcpy(komunikaty->komunikat, bufor);
                 }
                 else
@@ -401,8 +451,17 @@ void wybor_akcji(struct Trie *korzen, int nacisniety_przycisk, char wpisywane_sl
             }
         case 4:
             {
-                if(odczytaj_z_pliku_i_wstaw_do_drzewa(korzen, wpisywane_slowo) == true) {// nie dziala, trzeba wyczyscisc drzewo przed dodaniem elementow z pliku
+                usun_przed_wczytaniem(*korzen);
+                *korzen = stworz_nowe_drzewo_trie();
+                if(odczytaj_z_pliku_i_wstaw_do_drzewa(korzen, wpisywane_slowo) == true) {
+                    czas_start();
                     char bufor[50] = "Wczytano z: ";
+                    char napis[10] = " Czas: ";
+                    strncat(bufor, napis, 8);
+                    char e[10];
+                    double elapsed = czas_stop();
+                    sprintf(e, "%lf", elapsed);
+                    strncat(bufor, e, 10);
                     strncat(bufor, wpisywane_slowo, strlen(wpisywane_slowo));
                     strcpy(komunikaty->komunikat, bufor);
                 }
@@ -497,4 +556,16 @@ int sprawdz_nacisniecie_przycisku(int mysz_x, int mysz_y, struct Przycisk przyci
     }
 
     return -1;
+}
+
+void czas_start() {
+    QueryPerformanceCounter(&begin);
+}
+
+double czas_stop() {
+    QueryPerformanceCounter(&end);
+    LARGE_INTEGER freq;
+    QueryPerformanceFrequency(&freq);
+
+    return ((end.QuadPart - begin.QuadPart) * 1000.0) / freq.QuadPart;
 }
