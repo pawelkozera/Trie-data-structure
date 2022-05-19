@@ -24,6 +24,7 @@
 
 struct Trie {
     int jest_lisciem; // 1 gdy jest lisciem, 0 gdy nie jest
+    int x, y;
     struct Trie* litery[LITERY_ALFABETU];
 };
 
@@ -56,6 +57,7 @@ bool zapisz_do_pliku(struct Trie *korzen, char nazwa_pliku[]);
 void zapisz_drzewo(struct Trie *korzen, char slowa[], int index, char nazwa_pliku[]);
 void wybor_akcji(struct Trie **korzen, int nacisniety_przycisk, char wpisywane_slowo[], struct Komunikaty *komunikaty);
 int narysuj_drzewo(struct Trie *korzen, int szerokosc, int wysokosc, ALLEGRO_FONT* font, int glebokosc, struct Kamera kamera);
+void narysuj_linie_drzewa(struct Trie *korzen);
 int ilosc_galezi(struct Trie *korzen);
 void narysuj_menu(ALLEGRO_FONT* font, struct Przycisk przycisk);
 void narysuj_komunikat(ALLEGRO_FONT*font, struct Komunikaty komunikaty, struct Przycisk przycisk_wczytaj);
@@ -79,15 +81,6 @@ int main()
     struct Przycisk przycisk_wczytaj = {420, WYSOKOSC_EKRANU - 60, 80, 40, "Wczytaj"};
 
     struct Przycisk przyciski[] = {przycisk_dodaj, przycisk_usun, przycisk_znajdz, przycisk_zapisz, przycisk_wczytaj};
-
-    // testowanie działania
-    char z[] = "dog";
-    char x[] = "kot";
-    char c[] = "koala";
-
-    wstaw_do_drzewa(korzen, z);
-    wstaw_do_drzewa(korzen, x);
-    wstaw_do_drzewa(korzen, c);
 
     //Allegro5
     al_init();
@@ -200,6 +193,7 @@ int main()
 
             if (wyswietlanie_drzewa) {
                 narysuj_drzewo(korzen, SREDNICA_OKREGU + 10, SREDNICA_OKREGU + 120, font, 0, kamera);
+                narysuj_linie_drzewa(korzen);
                 narysuj_menu(font, przycisk_dodaj);
                 narysuj_menu(font, przycisk_usun);
                 narysuj_menu(font, przycisk_znajdz);
@@ -229,6 +223,8 @@ int main()
 struct Trie* stworz_nowe_drzewo_trie() {
     struct Trie* drzewo = (struct Trie*)malloc(sizeof(struct Trie));
     drzewo->jest_lisciem = 0;
+    drzewo->x = 0;
+    drzewo->y = 0;
 
     for (int i = 0; i < LITERY_ALFABETU; i++) {
         drzewo->litery[i] = NULL;
@@ -477,8 +473,6 @@ void wybor_akcji(struct Trie **korzen, int nacisniety_przycisk, char wpisywane_s
 
 int narysuj_drzewo(struct Trie *korzen, int szerokosc, int wysokosc, ALLEGRO_FONT* font, int glebokosc, struct Kamera kamera) {
     if (korzen != NULL) {
-        int ilosc_g = ilosc_galezi(korzen);
-        int ilosc_g_bufor = ilosc_g;
         char litera[] = "a";
         int szerokosci[LITERY_ALFABETU] = {0};
         int n_szerokosci = 0;
@@ -488,28 +482,23 @@ int narysuj_drzewo(struct Trie *korzen, int szerokosc, int wysokosc, ALLEGRO_FON
                 szerokosc = narysuj_drzewo(korzen->litery[i], szerokosc, wysokosc + 100, font, glebokosc+1, kamera);
                 litera[0] = 'a' + i;
 
-                al_draw_circle(szerokosc + kamera.x, wysokosc + kamera.y, SREDNICA_OKREGU, al_map_rgb(0, 255, 0), 2);
+                korzen->litery[i]->x = szerokosc + kamera.x;
+                korzen->litery[i]->y = wysokosc + kamera.y;
+
+                al_draw_circle(korzen->litery[i]->x, korzen->litery[i]->y, SREDNICA_OKREGU, al_map_rgb(0, 255, 0), 2);
                 al_draw_textf(font, al_map_rgb(255, 255, 255), szerokosc + kamera.x, wysokosc + kamera.y, 0, litera);
 
-                if (glebokosc != 0) {
-                    al_draw_line(szerokosc + kamera.x, wysokosc - SREDNICA_OKREGU + kamera.y, szerokosc + (SREDNICA_OKREGU + 40)*ilosc_g + kamera.x, wysokosc - 100 + SREDNICA_OKREGU + kamera.y, al_map_rgb_f(1, 0, 0), 1);
-                }
-
-                if (glebokosc == 0) {
-                    szerokosci[n_szerokosci] = szerokosc;
-                    n_szerokosci++;
-                }
-
                 szerokosc += SREDNICA_OKREGU + 40;
-                ilosc_g--;
             }
         }
 
         if (glebokosc == 0) {
             al_draw_circle(szerokosc/2 + kamera.x, SREDNICA_OKREGU + kamera.y, SREDNICA_OKREGU, al_map_rgb(0, 255, 0), 2);
             al_draw_textf(font, al_map_rgb(255, 255, 255), szerokosc/2 + kamera.x, SREDNICA_OKREGU + kamera.y, 0, "#");
-            for (int i = 0; i < ilosc_g_bufor; i++) {
-                al_draw_line(szerokosc/2 + kamera.x, SREDNICA_OKREGU*2 + kamera.y, szerokosci[i] + kamera.x, wysokosc-SREDNICA_OKREGU + kamera.y, al_map_rgb_f(1, 0, 0), 1);
+            for (int i = 0; i < LITERY_ALFABETU; i++) {
+                if (korzen->litery[i] != NULL) {
+                    al_draw_line(szerokosc/2 + kamera.x, SREDNICA_OKREGU*2 + kamera.y, korzen->litery[i]->x, korzen->litery[i]->y - SREDNICA_OKREGU, al_map_rgb_f(1, 0, 0), 1);
+                }
             }
         }
     }
@@ -517,10 +506,33 @@ int narysuj_drzewo(struct Trie *korzen, int szerokosc, int wysokosc, ALLEGRO_FON
     return szerokosc;
 }
 
-int ilosc_galezi(struct Trie *korzen) {
-    int ilosc = 0;
+void narysuj_linie_drzewa(struct Trie *korzen) {
+    if (korzen == NULL) {
+        return;
+    }
+
     for (int i = 0; i < LITERY_ALFABETU; i++) {
         if (korzen->litery[i] != NULL) {
+            for (int j = 0; j < LITERY_ALFABETU; j++) {
+                if (korzen->litery[i]->litery[j] != NULL) {
+                    al_draw_line(korzen->litery[i]->x, korzen->litery[i]->y + SREDNICA_OKREGU, korzen->litery[i]->litery[j]->x, korzen->litery[i]->litery[j]->y - SREDNICA_OKREGU, al_map_rgb_f(1, 0, 0), 1);
+                }
+            }
+            narysuj_linie_drzewa(korzen->litery[i]);
+        }
+    }
+}
+
+int ilosc_galezi(struct Trie *korzen) {
+    int ilosc = 0;
+
+    if (korzen == NULL) {
+        return ilosc;
+    }
+
+    for (int i = 0; i < LITERY_ALFABETU; i++) {
+        if (korzen->litery[i] != NULL) {
+            ilosc += ilosc_galezi(korzen->litery[i]);
             ilosc++;
         }
     }
