@@ -1,20 +1,26 @@
-#include "struktury.h"
-#include <allegro5/allegro5.h>
-#include <allegro5/allegro_font.h>
-#include <allegro5/allegro_primitives.h>
+/// Biblioteki do obslugi czasu
 #include <string.h>
 #include <sys/time.h>
 #include "windows.h"
+
+/// Biblioteki Allegro 5
+#include <allegro5/allegro5.h>
+#include <allegro5/allegro_font.h>
+#include <allegro5/allegro_primitives.h>
+
+#include "struktury.h"
 
 #define ILOSC_PRZYCISKOW 5
 
 //struct timeval begin, end;
 LARGE_INTEGER begin, end;
 
+/// Funkcja rozpoczynajaca liczenie czasu
 void czas_start() {
     QueryPerformanceCounter(&begin);
 }
 
+/// Funkcja zatrzymujaca liczenie czasu
 double czas_stop() {
     QueryPerformanceCounter(&end);
     LARGE_INTEGER freq;
@@ -23,9 +29,11 @@ double czas_stop() {
     return ((end.QuadPart - begin.QuadPart) * 1000.0) / freq.QuadPart;
 }
 
+/// Funkcja aktywujaca akcje wcisnietych przyciskow
 void wybor_akcji(struct Trie **korzen, int nacisniety_przycisk, char wpisywane_slowo[], struct Komunikaty *komunikaty) {
     switch(nacisniety_przycisk)
     {
+        /// Wstawienie slowa do drzewa
         case 0:
             {
                 wstaw_do_drzewa(*korzen, wpisywane_slowo);
@@ -41,6 +49,7 @@ void wybor_akcji(struct Trie **korzen, int nacisniety_przycisk, char wpisywane_s
                 strcpy(komunikaty->komunikat, bufor);
                 break;
             }
+        /// Usuniecie slowa z drzewa
         case 1:
             {
                 usun_z_drzewa(*korzen, wpisywane_slowo, 0);
@@ -56,6 +65,7 @@ void wybor_akcji(struct Trie **korzen, int nacisniety_przycisk, char wpisywane_s
                 strcpy(komunikaty->komunikat, bufor);
                 break;
             }
+        /// Wyszukanie slowa z drzewa
         case 2:
             {
                 if (wyszukaj_z_drzewa(*korzen, wpisywane_slowo)) {
@@ -72,6 +82,7 @@ void wybor_akcji(struct Trie **korzen, int nacisniety_przycisk, char wpisywane_s
                 }
                 break;
             }
+        /// Zapisanie drzewa do pliku
         case 3:
             {
                 if(zapisz_do_pliku(*korzen, wpisywane_slowo) == true) {
@@ -90,6 +101,7 @@ void wybor_akcji(struct Trie **korzen, int nacisniety_przycisk, char wpisywane_s
                     puts("Operacja zakonczona niepowodzeniem");
                 break;
             }
+        /// Usuniecie przed wczytaniem
         case 4:
             {
                 usun_przed_wczytaniem(*korzen);
@@ -116,10 +128,12 @@ void wybor_akcji(struct Trie **korzen, int nacisniety_przycisk, char wpisywane_s
     }
 }
 
+/// Funkcja sprawdzajaca nacisniecie przycisku myszka
 int sprawdz_nacisniecie_przycisku(int mysz_x, int mysz_y, struct Przycisk przyciski[]) {
     bool myszka_w_zakresie_x = false;
     bool myszka_w_zakresie_y = false;
 
+    /// Petla sprawdzajaca miejsce wcisniecia myszka
     for (int i = 0; i < ILOSC_PRZYCISKOW; i++) {
         myszka_w_zakresie_x = (mysz_x >= przyciski[i].x && mysz_x <= przyciski[i].x + przyciski[i].szerokosc);
         myszka_w_zakresie_y = (mysz_y >= przyciski[i].y && mysz_y <= przyciski[i].y + przyciski[i].wysokosc);
@@ -131,6 +145,7 @@ int sprawdz_nacisniecie_przycisku(int mysz_x, int mysz_y, struct Przycisk przyci
     return -1;
 }
 
+/// Funkcja sterujaca kamera po oknie
 void sterowanie_kamera(struct Kamera *kamera, char znak) {
     int szybkosc = 10;
 

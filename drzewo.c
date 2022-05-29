@@ -1,12 +1,16 @@
+/// Podstawowe biblioteki jezyka C
 #include <stdio.h>
 #include <stdlib.h>
 #include <ctype.h>
+
+/// Biblioteki Allegro 5
 #include <allegro5/allegro5.h>
 #include <allegro5/allegro_font.h>
 #include <allegro5/allegro_primitives.h>
 
 #include "struktury.h"
 
+/// Struktura danych do stworzenia drzewa
 struct Trie* stworz_nowe_drzewo_trie() {
     struct Trie* drzewo = (struct Trie*)malloc(sizeof(struct Trie));
     drzewo->jest_lisciem = 0;
@@ -28,10 +32,12 @@ struct Trie* stworz_nowe_drzewo_trie() {
 'b' - 'a' = 1
 odejmujac 'a' otrzymujemy indeksy od 0 do 25, dla alfabetu od a do z bez Polskich znakow
 */
+/// Funkcja wstawiajaca litery do wezlow w drzewie
 void wstaw_do_drzewa(struct Trie *korzen, char slowo[]) {
     struct Trie *aktualny_wezel = korzen;
     zamien_na_male_litery(slowo);
 
+    ///
     while (*slowo) {
         if (aktualny_wezel->litery[*slowo - 'a'] == NULL) {
             aktualny_wezel->litery[*slowo - 'a'] = stworz_nowe_drzewo_trie();
@@ -43,12 +49,14 @@ void wstaw_do_drzewa(struct Trie *korzen, char slowo[]) {
     aktualny_wezel->jest_lisciem = 1;
 }
 
+/// Funkcja zamieniajace wszystkie litery na male
 void zamien_na_male_litery(char slowo[]) {
     for (int i = 0; i < strlen(slowo); i++) {
         slowo[i] = tolower(slowo[i]);
     }
 }
 
+///
 bool nie_ma_dzieci(struct Trie *korzen) {
     for (int i = 0; i < LITERY_ALFABETU; i++) {
         if (korzen->litery[i]) {
@@ -58,16 +66,17 @@ bool nie_ma_dzieci(struct Trie *korzen) {
     return true;
 }
 
+/// Funkcja usuwania slowa z drzewa
 struct Trie* usun_z_drzewa(struct Trie *korzen, char slowo[], int glebokosc) {
     if (korzen == NULL) {
         return NULL;
     }
-
+    /// Zerowanie wezlow
     if (strlen(slowo) == glebokosc) {
         if (korzen->jest_lisciem) {
             korzen->jest_lisciem = 0;
         }
-
+        /// Usuniecie wezla
         if (nie_ma_dzieci(korzen)) {
             free(korzen);
             korzen = NULL;
@@ -75,10 +84,10 @@ struct Trie* usun_z_drzewa(struct Trie *korzen, char slowo[], int glebokosc) {
 
         return korzen;
     }
-
+    ///
     int index = slowo[glebokosc] - 'a';
     korzen->litery[index] = usun_z_drzewa(korzen->litery[index], slowo, glebokosc + 1);
-
+    /// Usuniecie wezla
     if (nie_ma_dzieci(korzen) && korzen->jest_lisciem == 0) {
         free(korzen);
         korzen = NULL;
@@ -87,6 +96,7 @@ struct Trie* usun_z_drzewa(struct Trie *korzen, char slowo[], int glebokosc) {
     return korzen;
 }
 
+/// Funkcja usuwajaca wezly przed wczytaniem drzewa
 struct Trie* usun_przed_wczytaniem(struct Trie *korzen) {
     for (int i = 0; i < LITERY_ALFABETU; i++) {
         if (korzen->litery[i]) {
@@ -98,6 +108,7 @@ struct Trie* usun_przed_wczytaniem(struct Trie *korzen) {
     return NULL;
 };
 
+/// Funkcja wyszukujaca slowa z drzewa
 // zwraca 1 jesli slowo jest w drzewie, 0 jesli go nie ma
 int wyszukaj_z_drzewa(struct Trie *korzen, char *slowo) {
     if (korzen == NULL) {
@@ -105,6 +116,7 @@ int wyszukaj_z_drzewa(struct Trie *korzen, char *slowo) {
     }
 
     struct Trie* aktualny_wezel = korzen;
+    /// Petla wyszukujaca wezly z podanym slowem
     while (*slowo) {
         aktualny_wezel = aktualny_wezel->litery[*slowo - 'a'];
         if (aktualny_wezel == NULL) {
@@ -116,7 +128,9 @@ int wyszukaj_z_drzewa(struct Trie *korzen, char *slowo) {
     return aktualny_wezel->jest_lisciem;
 }
 
+/// Funkcja odczytujaca slowa z pliku i wstawiajaca je do drzewa
 bool odczytaj_z_pliku_i_wstaw_do_drzewa(struct Trie **korzen, char nazwa_pliku[]) {
+    /// Obs³uga pliku
     FILE *plik;
     plik = fopen(nazwa_pliku, "r");
 
@@ -126,6 +140,7 @@ bool odczytaj_z_pliku_i_wstaw_do_drzewa(struct Trie **korzen, char nazwa_pliku[]
 
     char linia[40];
     memset(linia, 0, 40);
+    /// Petla wstawiajaca slowa do drzewa
     while (fgets(linia, sizeof(linia), plik)) {
         linia[strcspn(linia, "\n")] = 0; //usuwa znak nowej lini z ciagu znakow
         wstaw_do_drzewa(*korzen, linia);
@@ -137,6 +152,7 @@ bool odczytaj_z_pliku_i_wstaw_do_drzewa(struct Trie **korzen, char nazwa_pliku[]
     return 1;
 }
 
+/// Funkcja zapisujaca slowa z drzewa do pliku
 bool zapisz_do_pliku(struct Trie *korzen, char nazwa_pliku[]) {
     FILE *plik;
     plik = fopen(nazwa_pliku, "w");
@@ -147,7 +163,9 @@ bool zapisz_do_pliku(struct Trie *korzen, char nazwa_pliku[]) {
     return 1;
 }
 
+/// Funkcja zapisujaca drzewo
 void zapisz_drzewo(struct Trie *korzen, char slowa[], int index, char nazwa_pliku[]) {
+    /// Zapis do pliku
     if (korzen != NULL) {
         if (korzen->jest_lisciem) {
             slowa[index] = '\0';
@@ -157,6 +175,7 @@ void zapisz_drzewo(struct Trie *korzen, char slowa[], int index, char nazwa_plik
 
             fclose(plik);
         }
+        ///
         for (int i = 0; i < LITERY_ALFABETU; i++) {
             if (korzen->litery[i] != NULL) {
                 slowa[index] = 'a' + i;

@@ -1,3 +1,6 @@
+///
+/// Struktury
+///
 #ifndef STRUKTURY_H_INCLUDED
 #define STRUKTURY_H_INCLUDED
 

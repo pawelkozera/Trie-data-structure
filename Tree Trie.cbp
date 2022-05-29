@@ -36,9 +36,24 @@
 			<Add option="-Wall" />
 			<Add directory="allegro-5.0.10-mingw-4.7.0/include" />
 		</Compiler>
+		<Unit filename="drzewo.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="drzewo.h" />
+		<Unit filename="komunikacja.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="komunikacja.h" />
 		<Unit filename="main.c">
 			<Option compilerVar="CC" />
 		</Unit>
+		<Unit filename="nowe.txt" />
+		<Unit filename="rysowanie.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="rysowanie.h" />
+		<Unit filename="slownik.txt" />
+		<Unit filename="struktury.h" />
 		<Extensions>
 			<lib_finder disable_auto="1" />
 		</Extensions>

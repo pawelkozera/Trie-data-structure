@@ -1,3 +1,6 @@
+///
+/// Prototypy funkcji rysowania
+///
 #ifndef RYSOWANIE_H_INCLUDED
 #define RYSOWANIE_H_INCLUDED
 
