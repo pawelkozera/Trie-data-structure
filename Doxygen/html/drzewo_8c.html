@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=11"/>
 <meta name="generator" content="Doxygen 1.9.4"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>Drzewo Trie: drzewo.c File Reference</title>
+<title>Drzewo trie: drzewo.c File Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -21,7 +21,7 @@
  <tbody>
  <tr id="projectrow">
   <td id="projectalign">
-   <div id="projectname">Drzewo Trie
+   <div id="projectname">Drzewo trie
    </div>
   </td>
  </tr>
@@ -126,6 +126,10 @@ Functions</h2></td></tr>
 </div><div class="memdoc">
 
 <p>SPRAWDZENIE CZY JEST KOLEJNY WĘZEŁ </p>
+<p >Przyjmuje 1 argument:</p><ul>
+<li>wskaznik na galaz drzewa</li>
+</ul>
+<p >Zwraca true jesli galaz nie ma zadnych dzieci. </p>
 
 </div>
 </div>
@@ -156,6 +160,12 @@ Functions</h2></td></tr>
 </div><div class="memdoc">
 
 <p>ODCZYTYWANIE SŁÓW Z PLIKU I WSTAWIANIE ICH DO DRZEWA. </p>
+<p >Przyjmuje 2 argumenty:</p><ul>
+<li>podwojny wskaznik na korzen drzewa</li>
+<li>tablice znakow, zawierajaca nazwe pliku. Nazwa musi zawierac rozszerzenie np. "nazwa.txt"</li>
+</ul>
+<p >Odczytuje z pliku zapisane slowa i wstawia je do drzewa.</p>
+<p >Zwraca true jeśli operacja się powiedzie. </p>
 
 </div>
 </div>
@@ -175,7 +185,8 @@ Functions</h2></td></tr>
 </div><div class="memdoc">
 
 <p>TWORZENIE DRZEWA. </p>
-<p >Funkcja tworząca drzewo. Alokuje pamięć i przygotowuje węzły. </p>
+<p >Funkcja tworząca drzewo. Alokuje pamięć i przygotowuje węzły.</p>
+<p >Zwraca wskaznik na korzen. </p>
 
 </div>
 </div>
@@ -196,6 +207,11 @@ Functions</h2></td></tr>
 </div><div class="memdoc">
 
 <p>USUNIĘCIE DRZEWA PRZED WCZYTANIEM NASTĘPNEGO. </p>
+<p >Przyjmuje 1 argument:</p><ul>
+<li>wskaznik na korzen drzewa</li>
+</ul>
+<p >Usuwa wszystkie elementy z drzewa</p>
+<p >Zwraca wartosc NULL </p>
 
 </div>
 </div>
@@ -232,6 +248,11 @@ Functions</h2></td></tr>
 </div><div class="memdoc">
 
 <p>USUNIĘCIE SŁOWA Z DRZEWA. </p>
+<p >Przyjmuje 3 argumenty:</p><ul>
+<li>wskaznik na korzen drzewa</li>
+<li>tablice znakow, zawierajaca slowo do usuniecia</li>
+<li>glebokosc drzewa, nalezy podac 0</li>
+</ul>
 <p >Usuwanie slowa z drzewa poprzez zerowanie węzłów i usuwaniem ich. </p>
 
 </div>
@@ -263,7 +284,10 @@ Functions</h2></td></tr>
 </div><div class="memdoc">
 
 <p>WSTAWIANIE DO DRZEWA. </p>
-<p >Funkcja wstawiajaca litery do wezłów w drzewie. </p>
+<p >Przyjmuje 2 argumenty:</p><ul>
+<li>wskaznik na korzen drzewa</li>
+<li>tablice znakow, ktore zostane dodane do drzewa. Ostatni znak zostanie lisciem drzewa. Funkcja wstawiajaca litery do wezłów w drzewie. </li>
+</ul>
 
 </div>
 </div>
@@ -294,7 +318,12 @@ Functions</h2></td></tr>
 </div><div class="memdoc">
 
 <p>SZUKANIE SŁÓW W DRZEWIE. </p>
-<p >Przeszukiwanie wszystkich liter alfabetu. </p>
+<p >Przyjmuje 2 argumenty:</p><ul>
+<li>wskaznik na korzen drzewa</li>
+<li>wskaznik na tablice znakow, zawierajaca szukane slowo</li>
+</ul>
+<p >Znaki zostaja zamienione na odpowiednie indeksy tablicy i nastepuje sprawdzenie czy istnieja w danym drzewie.</p>
+<p >Zwraca wartosc 1 jesli slowo jest w drzewie, 0 jesli go nie mam. </p>
 
 </div>
 </div>
@@ -315,6 +344,10 @@ Functions</h2></td></tr>
 </div><div class="memdoc">
 
 <p>ZAMIANA LITER NA MAŁE. </p>
+<p >Przyjmuje 1 argument:</p><ul>
+<li>tablice znakow</li>
+</ul>
+<p >Wszystkie znaki w tablicy, zostana zamienione na male znaki. </p>
 
 </div>
 </div>
@@ -345,6 +378,12 @@ Functions</h2></td></tr>
 </div><div class="memdoc">
 
 <p>ZAPISYWANIE DRZEWA DO PLIKU. </p>
+<p >Przyjmuje 2 argumenty:</p><ul>
+<li>wskaznik na korzen drzewa</li>
+<li>tablice znakow, zawierajaca nazwe pliku. Nazwa musi zawierac rozszerzenie np. "nazwa.txt"</li>
+</ul>
+<p >Tworzy nowy plik i wywoluje funkcje pomocniczna "zapisz_drzewo()" dodajaca drzewo do pliku.</p>
+<p >Zwraca true jesli operacja powiedzie sie. </p>
 
 </div>
 </div>
@@ -387,6 +426,13 @@ Functions</h2></td></tr>
 </div><div class="memdoc">
 
 <p>ZAPISANIE DRZEWA. </p>
+<p >Przyjmuje 4 argumenty:</p><ul>
+<li>wskaznik na korzen drzewa</li>
+<li>pusta tablice znakow</li>
+<li>index tablicy, nalezy podac 0</li>
+<li>tablice znakow, zawierajaca nazwe pliku. Nazwa musi zawierac rozszerzenie np. "nazwa.txt"</li>
+</ul>
+<p >Funkcja pomocniczna do dodania slow z drzew do pliku. Funkcja nie tworzy nowego pliku ale dodaje slowa do juz istniejacego. </p>
 
 </div>
 </div>

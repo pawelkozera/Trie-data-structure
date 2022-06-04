@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=11"/>
 <meta name="generator" content="Doxygen 1.9.4"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>Drzewo Trie: rysowanie.h File Reference</title>
+<title>Drzewo trie: rysowanie.h File Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -21,7 +21,7 @@
  <tbody>
  <tr id="projectrow">
   <td id="projectalign">
-   <div id="projectname">Drzewo Trie
+   <div id="projectname">Drzewo trie
    </div>
   </td>
  </tr>
@@ -76,7 +76,7 @@ Functions</h2></td></tr>
 <tr class="memdesc:af35f2f7c9110ad29b70e0a50643c92f9"><td class="mdescLeft">&#160;</td><td class="mdescRight">RYSOWANIE OKRĘGÓW WĘZŁÓW.  <a href="rysowanie_8h.html#af35f2f7c9110ad29b70e0a50643c92f9">More...</a><br /></td></tr>
 <tr class="separator:af35f2f7c9110ad29b70e0a50643c92f9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a215ea6fc9ad92e362df648671b475f7e"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="rysowanie_8h.html#a215ea6fc9ad92e362df648671b475f7e">narysuj_linie_drzewa</a> (struct <a class="el" href="struct_trie.html">Trie</a> *korzen)</td></tr>
-<tr class="memdesc:a215ea6fc9ad92e362df648671b475f7e"><td class="mdescLeft">&#160;</td><td class="mdescRight">RYSOWANIE LINII.  <a href="rysowanie_8h.html#a215ea6fc9ad92e362df648671b475f7e">More...</a><br /></td></tr>
+<tr class="memdesc:a215ea6fc9ad92e362df648671b475f7e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Funkcja rysujaca linie laczace wezly.  <a href="rysowanie_8h.html#a215ea6fc9ad92e362df648671b475f7e">More...</a><br /></td></tr>
 <tr class="separator:a215ea6fc9ad92e362df648671b475f7e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7c4506e753d61d7e1e768099ca5348a9"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="rysowanie_8h.html#a7c4506e753d61d7e1e768099ca5348a9">narysuj_menu</a> (ALLEGRO_FONT *font, struct <a class="el" href="struct_przycisk.html">Przycisk</a> przycisk)</td></tr>
 <tr class="memdesc:a7c4506e753d61d7e1e768099ca5348a9"><td class="mdescLeft">&#160;</td><td class="mdescRight">RYSOWANIE MENU.  <a href="rysowanie_8h.html#a7c4506e753d61d7e1e768099ca5348a9">More...</a><br /></td></tr>
@@ -140,7 +140,16 @@ Functions</h2></td></tr>
 </div><div class="memdoc">
 
 <p>RYSOWANIE OKRĘGÓW WĘZŁÓW. </p>
-<p >Funkcja rysuje okregi węzłów rekurencyjnie. </p>
+<p >Przyjmuje 6 argumentow:</p><ul>
+<li>wskaznik na korzen drzewa</li>
+<li>szerokosc rozpoczecia rysowania (pozycja x)</li>
+<li>wysokosc rozpoczecia rysowania (pozycja y)</li>
+<li>wskaznik na Allegro font</li>
+<li>glebokosc drzewa, nalezy podac 0</li>
+<li>strukture kamera</li>
+</ul>
+<p >Funkcja rekurencyjna, ktora kazdemu elementowi drzewa poczynajac od lewego dolnego, przyporzadkowuje pozycje x i y oraz rysuje w tej pozycji przyporzadkowana litere z drzewa i okrag dookola niej. Dla wierzcholka drzewa rysowany jest symbol "#".</p>
+<p >Zwraca polozenie x ostatniego elementu. </p>
 
 </div>
 </div>
@@ -177,6 +186,12 @@ Functions</h2></td></tr>
 </div><div class="memdoc">
 
 <p>RYSOWANIE KOMUNIKATÓW. </p>
+<p >Przyjmuje 3 argumenty:</p><ul>
+<li>wskaznik na Allegro font</li>
+<li>strukture komunikaty</li>
+<li>strukture przycisk</li>
+</ul>
+<p >Rysuje komunikat. </p>
 
 </div>
 </div>
@@ -196,8 +211,11 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>RYSOWANIE LINII. </p>
-<p >Rysowanie linii rekurencyjnie łączące odpowiednie węzły. Funkcja rysujaca linie laczace wezly </p>
+<p>Funkcja rysujaca linie laczace wezly. </p>
+<p >Przyjmuje 1 argument:</p><ul>
+<li>wskaznik na korzen drzewa</li>
+</ul>
+<p >Funkcja rekurencyjna rysujaca linie laczaca element drzewa z kazdym jej dzieckiem. </p>
 
 </div>
 </div>
@@ -228,6 +246,10 @@ Functions</h2></td></tr>
 </div><div class="memdoc">
 
 <p>RYSOWANIE MENU. </p>
+<p >Przyjmuje 2 argumenty:</p><ul>
+<li>wskaznik na Allegro font</li>
+<li>strukture przycisk</li>
+</ul>
 <p >Rysowanie przycisków i tekstu na nich. </p>
 
 </div>
@@ -259,6 +281,10 @@ Functions</h2></td></tr>
 </div><div class="memdoc">
 
 <p>RYSOWANIE LITER. </p>
+<p >Przyjmuje 2 argumenty:</p><ul>
+<li>wskaznik na Allegro font</li>
+<li>tablice znakow wpisywanych przez uzytkownika</li>
+</ul>
 <p >Rysowanie liter wpisywanych przez użytkownika. </p>
 
 </div>

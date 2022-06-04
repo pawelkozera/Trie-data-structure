@@ -6,5 +6,6 @@ var searchData=
   ['komunikacja_2ec_3',['komunikacja.c',['../komunikacja_8c.html',1,'']]],
   ['komunikacja_2eh_4',['komunikacja.h',['../komunikacja_8h.html',1,'']]],
   ['komunikat_5',['komunikat',['../struct_komunikaty.html#a34db83aad1ed3858c808b8dd56ee8a19',1,'Komunikaty']]],
-  ['komunikaty_6',['Komunikaty',['../struct_komunikaty.html',1,'']]]
+  ['komunikat_5fczas_6',['komunikat_czas',['../struct_komunikaty.html#a63ae6619d6ab63cc779561284ec4e433',1,'Komunikaty']]],
+  ['komunikaty_7',['Komunikaty',['../struct_komunikaty.html',1,'']]]
 ];
