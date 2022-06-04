@@ -1,6 +1,3 @@
-///
-/// Prototypy funkcji komunikacji z uzytkownikiem
-///
 #ifndef KOMUNIKACJA_H_INCLUDED
 #define KOMUNIKACJA_H_INCLUDED
 

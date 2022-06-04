@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=11"/>
 <meta name="generator" content="Doxygen 1.9.4"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>Drzewo Trie: C:/Users/szymo/Downloads/Trie-data-structure-master/struktury.h Source File</title>
+<title>Drzewo Trie: struktury.h Source File</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -62,52 +62,55 @@ $(function() {
 </div>
 
 <div class="header">
-  <div class="headertitle"><div class="title">C:/Users/szymo/Downloads/Trie-data-structure-master/struktury.h</div></div>
+  <div class="headertitle"><div class="title">struktury.h</div></div>
 </div><!--header-->
 <div class="contents">
-<a href="struktury_8h.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno">    1</span> </div>
-<div class="line"><a id="l00004" name="l00004"></a><span class="lineno">    4</span><span class="preprocessor">#ifndef STRUKTURY_H_INCLUDED</span></div>
-<div class="line"><a id="l00005" name="l00005"></a><span class="lineno">    5</span><span class="preprocessor">#define STRUKTURY_H_INCLUDED</span></div>
-<div class="line"><a id="l00006" name="l00006"></a><span class="lineno">    6</span> </div>
-<div class="line"><a id="l00007" name="l00007"></a><span class="lineno"><a class="line" href="struktury_8h.html#ae2acaf4e43c79a3cea23146072f1e8e7">    7</a></span><span class="preprocessor">#define LITERY_ALFABETU 26</span></div>
-<div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span> </div>
-<div class="line"><a id="l00009" name="l00009"></a><span class="lineno"><a class="line" href="struct_trie.html">    9</a></span><span class="keyword">struct </span><a class="code hl_struct" href="struct_trie.html">Trie</a> {</div>
-<div class="line"><a id="l00010" name="l00010"></a><span class="lineno"><a class="line" href="struct_trie.html#af3d8d305ac1beedc00d12aca7f9b404d">   10</a></span>    <span class="keywordtype">int</span> <a class="code hl_variable" href="struct_trie.html#af3d8d305ac1beedc00d12aca7f9b404d">jest_lisciem</a>; <span class="comment">// 1 gdy jest lisciem, 0 gdy nie jest</span></div>
-<div class="line"><a id="l00011" name="l00011"></a><span class="lineno"><a class="line" href="struct_trie.html#a6150e0515f7202e2fb518f7206ed97dc">   11</a></span>    <span class="keywordtype">int</span> <a class="code hl_variable" href="struct_trie.html#a6150e0515f7202e2fb518f7206ed97dc">x</a>, <a class="code hl_variable" href="struct_trie.html#a0a2f84ed7838f07779ae24c5a9086d33">y</a>;</div>
-<div class="line"><a id="l00012" name="l00012"></a><span class="lineno"><a class="line" href="struct_trie.html#a71c0b1adcb9c95a5a71554ffef95ab31">   12</a></span>    <span class="keyword">struct </span><a class="code hl_struct" href="struct_trie.html">Trie</a>* <a class="code hl_variable" href="struct_trie.html#a71c0b1adcb9c95a5a71554ffef95ab31">litery</a>[<a class="code hl_define" href="struktury_8h.html#ae2acaf4e43c79a3cea23146072f1e8e7">LITERY_ALFABETU</a>];</div>
-<div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span>};</div>
-<div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span> </div>
-<div class="line"><a id="l00015" name="l00015"></a><span class="lineno"><a class="line" href="struct_kamera.html">   15</a></span><span class="keyword">struct </span><a class="code hl_struct" href="struct_kamera.html">Kamera</a> {</div>
-<div class="line"><a id="l00016" name="l00016"></a><span class="lineno"><a class="line" href="struct_kamera.html#a6150e0515f7202e2fb518f7206ed97dc">   16</a></span>    <span class="keywordtype">int</span> <a class="code hl_variable" href="struct_kamera.html#a6150e0515f7202e2fb518f7206ed97dc">x</a>, <a class="code hl_variable" href="struct_kamera.html#a0a2f84ed7838f07779ae24c5a9086d33">y</a>;</div>
-<div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span>};</div>
-<div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span> </div>
-<div class="line"><a id="l00019" name="l00019"></a><span class="lineno"><a class="line" href="struct_przycisk.html">   19</a></span><span class="keyword">struct </span><a class="code hl_struct" href="struct_przycisk.html">Przycisk</a> {</div>
-<div class="line"><a id="l00020" name="l00020"></a><span class="lineno"><a class="line" href="struct_przycisk.html#af1f0ba8f4d8149b50ae1862fc977957c">   20</a></span>    <span class="keywordtype">int</span> <a class="code hl_variable" href="struct_przycisk.html#a6150e0515f7202e2fb518f7206ed97dc">x</a>, <a class="code hl_variable" href="struct_przycisk.html#a0a2f84ed7838f07779ae24c5a9086d33">y</a>, <a class="code hl_variable" href="struct_przycisk.html#af1f0ba8f4d8149b50ae1862fc977957c">szerokosc</a>, <a class="code hl_variable" href="struct_przycisk.html#ad692069247479f1e474a47ab7ab83954">wysokosc</a>;</div>
-<div class="line"><a id="l00021" name="l00021"></a><span class="lineno"><a class="line" href="struct_przycisk.html#a1aabf3052b7eb9d18fec70d2f76754a6">   21</a></span>    <span class="keywordtype">char</span> <a class="code hl_variable" href="struct_przycisk.html#a1aabf3052b7eb9d18fec70d2f76754a6">napis</a>[10];</div>
-<div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span>};</div>
-<div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span> </div>
-<div class="line"><a id="l00024" name="l00024"></a><span class="lineno"><a class="line" href="struct_komunikaty.html">   24</a></span><span class="keyword">struct </span><a class="code hl_struct" href="struct_komunikaty.html">Komunikaty</a> {</div>
-<div class="line"><a id="l00025" name="l00025"></a><span class="lineno"><a class="line" href="struct_komunikaty.html#a34db83aad1ed3858c808b8dd56ee8a19">   25</a></span>    <span class="keywordtype">char</span> <a class="code hl_variable" href="struct_komunikaty.html#a34db83aad1ed3858c808b8dd56ee8a19">komunikat</a>[50];</div>
-<div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span>};</div>
-<div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span> </div>
-<div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span><span class="preprocessor">#endif </span><span class="comment">// STRUKTURY_H_INCLUDED</span></div>
-<div class="ttc" id="astruct_kamera_html"><div class="ttname"><a href="struct_kamera.html">Kamera</a></div><div class="ttdef"><b>Definition:</b> struktury.h:15</div></div>
-<div class="ttc" id="astruct_kamera_html_a0a2f84ed7838f07779ae24c5a9086d33"><div class="ttname"><a href="struct_kamera.html#a0a2f84ed7838f07779ae24c5a9086d33">Kamera::y</a></div><div class="ttdeci">int y</div><div class="ttdef"><b>Definition:</b> struktury.h:16</div></div>
-<div class="ttc" id="astruct_kamera_html_a6150e0515f7202e2fb518f7206ed97dc"><div class="ttname"><a href="struct_kamera.html#a6150e0515f7202e2fb518f7206ed97dc">Kamera::x</a></div><div class="ttdeci">int x</div><div class="ttdef"><b>Definition:</b> struktury.h:16</div></div>
-<div class="ttc" id="astruct_komunikaty_html"><div class="ttname"><a href="struct_komunikaty.html">Komunikaty</a></div><div class="ttdef"><b>Definition:</b> struktury.h:24</div></div>
-<div class="ttc" id="astruct_komunikaty_html_a34db83aad1ed3858c808b8dd56ee8a19"><div class="ttname"><a href="struct_komunikaty.html#a34db83aad1ed3858c808b8dd56ee8a19">Komunikaty::komunikat</a></div><div class="ttdeci">char komunikat[50]</div><div class="ttdef"><b>Definition:</b> struktury.h:25</div></div>
-<div class="ttc" id="astruct_przycisk_html"><div class="ttname"><a href="struct_przycisk.html">Przycisk</a></div><div class="ttdef"><b>Definition:</b> struktury.h:19</div></div>
-<div class="ttc" id="astruct_przycisk_html_a0a2f84ed7838f07779ae24c5a9086d33"><div class="ttname"><a href="struct_przycisk.html#a0a2f84ed7838f07779ae24c5a9086d33">Przycisk::y</a></div><div class="ttdeci">int y</div><div class="ttdef"><b>Definition:</b> struktury.h:20</div></div>
-<div class="ttc" id="astruct_przycisk_html_a1aabf3052b7eb9d18fec70d2f76754a6"><div class="ttname"><a href="struct_przycisk.html#a1aabf3052b7eb9d18fec70d2f76754a6">Przycisk::napis</a></div><div class="ttdeci">char napis[10]</div><div class="ttdef"><b>Definition:</b> struktury.h:21</div></div>
-<div class="ttc" id="astruct_przycisk_html_a6150e0515f7202e2fb518f7206ed97dc"><div class="ttname"><a href="struct_przycisk.html#a6150e0515f7202e2fb518f7206ed97dc">Przycisk::x</a></div><div class="ttdeci">int x</div><div class="ttdef"><b>Definition:</b> struktury.h:20</div></div>
-<div class="ttc" id="astruct_przycisk_html_ad692069247479f1e474a47ab7ab83954"><div class="ttname"><a href="struct_przycisk.html#ad692069247479f1e474a47ab7ab83954">Przycisk::wysokosc</a></div><div class="ttdeci">int wysokosc</div><div class="ttdef"><b>Definition:</b> struktury.h:20</div></div>
-<div class="ttc" id="astruct_przycisk_html_af1f0ba8f4d8149b50ae1862fc977957c"><div class="ttname"><a href="struct_przycisk.html#af1f0ba8f4d8149b50ae1862fc977957c">Przycisk::szerokosc</a></div><div class="ttdeci">int szerokosc</div><div class="ttdef"><b>Definition:</b> struktury.h:20</div></div>
-<div class="ttc" id="astruct_trie_html"><div class="ttname"><a href="struct_trie.html">Trie</a></div><div class="ttdef"><b>Definition:</b> struktury.h:9</div></div>
-<div class="ttc" id="astruct_trie_html_a0a2f84ed7838f07779ae24c5a9086d33"><div class="ttname"><a href="struct_trie.html#a0a2f84ed7838f07779ae24c5a9086d33">Trie::y</a></div><div class="ttdeci">int y</div><div class="ttdef"><b>Definition:</b> struktury.h:11</div></div>
-<div class="ttc" id="astruct_trie_html_a6150e0515f7202e2fb518f7206ed97dc"><div class="ttname"><a href="struct_trie.html#a6150e0515f7202e2fb518f7206ed97dc">Trie::x</a></div><div class="ttdeci">int x</div><div class="ttdef"><b>Definition:</b> struktury.h:11</div></div>
-<div class="ttc" id="astruct_trie_html_a71c0b1adcb9c95a5a71554ffef95ab31"><div class="ttname"><a href="struct_trie.html#a71c0b1adcb9c95a5a71554ffef95ab31">Trie::litery</a></div><div class="ttdeci">struct Trie * litery[LITERY_ALFABETU]</div><div class="ttdef"><b>Definition:</b> struktury.h:12</div></div>
-<div class="ttc" id="astruct_trie_html_af3d8d305ac1beedc00d12aca7f9b404d"><div class="ttname"><a href="struct_trie.html#af3d8d305ac1beedc00d12aca7f9b404d">Trie::jest_lisciem</a></div><div class="ttdeci">int jest_lisciem</div><div class="ttdef"><b>Definition:</b> struktury.h:10</div></div>
-<div class="ttc" id="astruktury_8h_html_ae2acaf4e43c79a3cea23146072f1e8e7"><div class="ttname"><a href="struktury_8h.html#ae2acaf4e43c79a3cea23146072f1e8e7">LITERY_ALFABETU</a></div><div class="ttdeci">#define LITERY_ALFABETU</div><div class="ttdef"><b>Definition:</b> struktury.h:7</div></div>
+<a href="struktury_8h.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno">    1</span><span class="preprocessor">#ifndef STRUKTURY_H_INCLUDED</span></div>
+<div class="line"><a id="l00002" name="l00002"></a><span class="lineno">    2</span><span class="preprocessor">#define STRUKTURY_H_INCLUDED</span></div>
+<div class="line"><a id="l00003" name="l00003"></a><span class="lineno">    3</span> </div>
+<div class="line"><a id="l00004" name="l00004"></a><span class="lineno"><a class="line" href="struktury_8h.html#ae2acaf4e43c79a3cea23146072f1e8e7">    4</a></span><span class="preprocessor">#define LITERY_ALFABETU 26</span></div>
+<div class="line"><a id="l00005" name="l00005"></a><span class="lineno">    5</span> </div>
+<div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span> </div>
+<div class="line"><a id="l00008" name="l00008"></a><span class="lineno"><a class="line" href="struct_trie.html">    8</a></span><span class="keyword">struct </span><a class="code hl_struct" href="struct_trie.html">Trie</a> {</div>
+<div class="line"><a id="l00009" name="l00009"></a><span class="lineno"><a class="line" href="struct_trie.html#af3d8d305ac1beedc00d12aca7f9b404d">    9</a></span>    <span class="keywordtype">int</span> <a class="code hl_variable" href="struct_trie.html#af3d8d305ac1beedc00d12aca7f9b404d">jest_lisciem</a>; <span class="comment">// 1 gdy jest lisciem, 0 gdy nie jest</span></div>
+<div class="line"><a id="l00010" name="l00010"></a><span class="lineno"><a class="line" href="struct_trie.html#a6150e0515f7202e2fb518f7206ed97dc">   10</a></span>    <span class="keywordtype">int</span> <a class="code hl_variable" href="struct_trie.html#a6150e0515f7202e2fb518f7206ed97dc">x</a>, <a class="code hl_variable" href="struct_trie.html#a0a2f84ed7838f07779ae24c5a9086d33">y</a>;</div>
+<div class="line"><a id="l00011" name="l00011"></a><span class="lineno"><a class="line" href="struct_trie.html#a71c0b1adcb9c95a5a71554ffef95ab31">   11</a></span>    <span class="keyword">struct </span><a class="code hl_struct" href="struct_trie.html">Trie</a>* <a class="code hl_variable" href="struct_trie.html#a71c0b1adcb9c95a5a71554ffef95ab31">litery</a>[<a class="code hl_define" href="struktury_8h.html#ae2acaf4e43c79a3cea23146072f1e8e7">LITERY_ALFABETU</a>];</div>
+<div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span>};</div>
+<div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span> </div>
+<div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span> </div>
+<div class="line"><a id="l00016" name="l00016"></a><span class="lineno"><a class="line" href="struct_kamera.html">   16</a></span><span class="keyword">struct </span><a class="code hl_struct" href="struct_kamera.html">Kamera</a> {</div>
+<div class="line"><a id="l00017" name="l00017"></a><span class="lineno"><a class="line" href="struct_kamera.html#a6150e0515f7202e2fb518f7206ed97dc">   17</a></span>    <span class="keywordtype">int</span> <a class="code hl_variable" href="struct_kamera.html#a6150e0515f7202e2fb518f7206ed97dc">x</a>, <a class="code hl_variable" href="struct_kamera.html#a0a2f84ed7838f07779ae24c5a9086d33">y</a>;</div>
+<div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span>};</div>
+<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span> </div>
+<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span> </div>
+<div class="line"><a id="l00022" name="l00022"></a><span class="lineno"><a class="line" href="struct_przycisk.html">   22</a></span><span class="keyword">struct </span><a class="code hl_struct" href="struct_przycisk.html">Przycisk</a> {</div>
+<div class="line"><a id="l00023" name="l00023"></a><span class="lineno"><a class="line" href="struct_przycisk.html#af1f0ba8f4d8149b50ae1862fc977957c">   23</a></span>    <span class="keywordtype">int</span> <a class="code hl_variable" href="struct_przycisk.html#a6150e0515f7202e2fb518f7206ed97dc">x</a>, <a class="code hl_variable" href="struct_przycisk.html#a0a2f84ed7838f07779ae24c5a9086d33">y</a>, <a class="code hl_variable" href="struct_przycisk.html#af1f0ba8f4d8149b50ae1862fc977957c">szerokosc</a>, <a class="code hl_variable" href="struct_przycisk.html#ad692069247479f1e474a47ab7ab83954">wysokosc</a>;</div>
+<div class="line"><a id="l00024" name="l00024"></a><span class="lineno"><a class="line" href="struct_przycisk.html#a1aabf3052b7eb9d18fec70d2f76754a6">   24</a></span>    <span class="keywordtype">char</span> <a class="code hl_variable" href="struct_przycisk.html#a1aabf3052b7eb9d18fec70d2f76754a6">napis</a>[10];</div>
+<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span>};</div>
+<div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span> </div>
+<div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span> </div>
+<div class="line"><a id="l00029" name="l00029"></a><span class="lineno"><a class="line" href="struct_komunikaty.html">   29</a></span><span class="keyword">struct </span><a class="code hl_struct" href="struct_komunikaty.html">Komunikaty</a> {</div>
+<div class="line"><a id="l00030" name="l00030"></a><span class="lineno"><a class="line" href="struct_komunikaty.html#a34db83aad1ed3858c808b8dd56ee8a19">   30</a></span>    <span class="keywordtype">char</span> <a class="code hl_variable" href="struct_komunikaty.html#a34db83aad1ed3858c808b8dd56ee8a19">komunikat</a>[50];</div>
+<div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span>};</div>
+<div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span> </div>
+<div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span><span class="preprocessor">#endif </span><span class="comment">// STRUKTURY_H_INCLUDED</span></div>
+<div class="ttc" id="astruct_kamera_html"><div class="ttname"><a href="struct_kamera.html">Kamera</a></div><div class="ttdoc">KAMERA.</div><div class="ttdef"><b>Definition:</b> struktury.h:16</div></div>
+<div class="ttc" id="astruct_kamera_html_a0a2f84ed7838f07779ae24c5a9086d33"><div class="ttname"><a href="struct_kamera.html#a0a2f84ed7838f07779ae24c5a9086d33">Kamera::y</a></div><div class="ttdeci">int y</div><div class="ttdef"><b>Definition:</b> struktury.h:17</div></div>
+<div class="ttc" id="astruct_kamera_html_a6150e0515f7202e2fb518f7206ed97dc"><div class="ttname"><a href="struct_kamera.html#a6150e0515f7202e2fb518f7206ed97dc">Kamera::x</a></div><div class="ttdeci">int x</div><div class="ttdef"><b>Definition:</b> struktury.h:17</div></div>
+<div class="ttc" id="astruct_komunikaty_html"><div class="ttname"><a href="struct_komunikaty.html">Komunikaty</a></div><div class="ttdoc">KOMUNIKAT.</div><div class="ttdef"><b>Definition:</b> struktury.h:29</div></div>
+<div class="ttc" id="astruct_komunikaty_html_a34db83aad1ed3858c808b8dd56ee8a19"><div class="ttname"><a href="struct_komunikaty.html#a34db83aad1ed3858c808b8dd56ee8a19">Komunikaty::komunikat</a></div><div class="ttdeci">char komunikat[50]</div><div class="ttdef"><b>Definition:</b> struktury.h:30</div></div>
+<div class="ttc" id="astruct_przycisk_html"><div class="ttname"><a href="struct_przycisk.html">Przycisk</a></div><div class="ttdoc">PRZYCISK.</div><div class="ttdef"><b>Definition:</b> struktury.h:22</div></div>
+<div class="ttc" id="astruct_przycisk_html_a0a2f84ed7838f07779ae24c5a9086d33"><div class="ttname"><a href="struct_przycisk.html#a0a2f84ed7838f07779ae24c5a9086d33">Przycisk::y</a></div><div class="ttdeci">int y</div><div class="ttdef"><b>Definition:</b> struktury.h:23</div></div>
+<div class="ttc" id="astruct_przycisk_html_a1aabf3052b7eb9d18fec70d2f76754a6"><div class="ttname"><a href="struct_przycisk.html#a1aabf3052b7eb9d18fec70d2f76754a6">Przycisk::napis</a></div><div class="ttdeci">char napis[10]</div><div class="ttdef"><b>Definition:</b> struktury.h:24</div></div>
+<div class="ttc" id="astruct_przycisk_html_a6150e0515f7202e2fb518f7206ed97dc"><div class="ttname"><a href="struct_przycisk.html#a6150e0515f7202e2fb518f7206ed97dc">Przycisk::x</a></div><div class="ttdeci">int x</div><div class="ttdef"><b>Definition:</b> struktury.h:23</div></div>
+<div class="ttc" id="astruct_przycisk_html_ad692069247479f1e474a47ab7ab83954"><div class="ttname"><a href="struct_przycisk.html#ad692069247479f1e474a47ab7ab83954">Przycisk::wysokosc</a></div><div class="ttdeci">int wysokosc</div><div class="ttdef"><b>Definition:</b> struktury.h:23</div></div>
+<div class="ttc" id="astruct_przycisk_html_af1f0ba8f4d8149b50ae1862fc977957c"><div class="ttname"><a href="struct_przycisk.html#af1f0ba8f4d8149b50ae1862fc977957c">Przycisk::szerokosc</a></div><div class="ttdeci">int szerokosc</div><div class="ttdef"><b>Definition:</b> struktury.h:23</div></div>
+<div class="ttc" id="astruct_trie_html"><div class="ttname"><a href="struct_trie.html">Trie</a></div><div class="ttdoc">DRZEWO TRIE.</div><div class="ttdef"><b>Definition:</b> struktury.h:8</div></div>
+<div class="ttc" id="astruct_trie_html_a0a2f84ed7838f07779ae24c5a9086d33"><div class="ttname"><a href="struct_trie.html#a0a2f84ed7838f07779ae24c5a9086d33">Trie::y</a></div><div class="ttdeci">int y</div><div class="ttdef"><b>Definition:</b> struktury.h:10</div></div>
+<div class="ttc" id="astruct_trie_html_a6150e0515f7202e2fb518f7206ed97dc"><div class="ttname"><a href="struct_trie.html#a6150e0515f7202e2fb518f7206ed97dc">Trie::x</a></div><div class="ttdeci">int x</div><div class="ttdef"><b>Definition:</b> struktury.h:10</div></div>
+<div class="ttc" id="astruct_trie_html_a71c0b1adcb9c95a5a71554ffef95ab31"><div class="ttname"><a href="struct_trie.html#a71c0b1adcb9c95a5a71554ffef95ab31">Trie::litery</a></div><div class="ttdeci">struct Trie * litery[LITERY_ALFABETU]</div><div class="ttdef"><b>Definition:</b> struktury.h:11</div></div>
+<div class="ttc" id="astruct_trie_html_af3d8d305ac1beedc00d12aca7f9b404d"><div class="ttname"><a href="struct_trie.html#af3d8d305ac1beedc00d12aca7f9b404d">Trie::jest_lisciem</a></div><div class="ttdeci">int jest_lisciem</div><div class="ttdef"><b>Definition:</b> struktury.h:9</div></div>
+<div class="ttc" id="astruktury_8h_html_ae2acaf4e43c79a3cea23146072f1e8e7"><div class="ttname"><a href="struktury_8h.html#ae2acaf4e43c79a3cea23146072f1e8e7">LITERY_ALFABETU</a></div><div class="ttdeci">#define LITERY_ALFABETU</div><div class="ttdef"><b>Definition:</b> struktury.h:4</div></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>

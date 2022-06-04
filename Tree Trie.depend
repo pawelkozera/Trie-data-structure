@@ -586,19 +586,22 @@
 1648645508 c:\users\admin\desktop\projekty\s\trie-data-structure\allegro-5.0.10-mingw-4.7.0\include\allegro5\allegro_primitives.h
 	<allegro5/allegro.h>
 
-1651326629 source:c:\users\admin\desktop\projekty\trie-data-structure\main.c
+1654269880 source:c:\users\admin\desktop\projekty\trie-data-structure\main.c
 	<stdio.h>
 	<stdlib.h>
 	<ctype.h>
 	<allegro5/allegro5.h>
 	<allegro5/allegro_font.h>
 	<allegro5/allegro_primitives.h>
-	<string.h>
+	"struktury.h"
+	"rysowanie.h"
+	"drzewo.h"
+	"komunikacja.h"
 
-1650796860 c:\users\admin\desktop\projekty\trie-data-structure\allegro-5.0.10-mingw-4.7.0\include\allegro5\allegro5.h
+1653573392 c:\users\admin\desktop\projekty\trie-data-structure\allegro-5.0.10-mingw-4.7.0\include\allegro5\allegro5.h
 	"allegro.h"
 
-1650796860 c:\users\admin\desktop\projekty\trie-data-structure\allegro-5.0.10-mingw-4.7.0\include\allegro5\allegro.h
+1653573392 c:\users\admin\desktop\projekty\trie-data-structure\allegro-5.0.10-mingw-4.7.0\include\allegro5\allegro.h
 	"allegro5/base.h"
 	"allegro5/altime.h"
 	"allegro5/bitmap.h"
@@ -639,7 +642,7 @@
 	"allegro5/utf8.h"
 	"allegro5/alcompat.h"
 
-1650796860 c:\users\admin\desktop\projekty\trie-data-structure\allegro-5.0.10-mingw-4.7.0\include\allegro5\base.h
+1653573392 c:\users\admin\desktop\projekty\trie-data-structure\allegro-5.0.10-mingw-4.7.0\include\allegro5\base.h
 	<errno.h>
 	<limits.h>
 	<limits.h>
@@ -653,7 +656,7 @@
 	<dmalloc.h>
 	"allegro5/internal/alconfig.h"
 
-1650796860 c:\users\admin\desktop\projekty\trie-data-structure\allegro-5.0.10-mingw-4.7.0\include\allegro5\internal\alconfig.h
+1653573392 c:\users\admin\desktop\projekty\trie-data-structure\allegro-5.0.10-mingw-4.7.0\include\allegro5\internal\alconfig.h
 	"allegro5/platform/alplatf.h"
 	"allegro5/platform/alwatcom.h"
 	"allegro5/platform/almngw32.h"
@@ -668,9 +671,9 @@
 	"allegro5/platform/astdint.h"
 	"allegro5/platform/astdbool.h"
 
-1650796860 c:\users\admin\desktop\projekty\trie-data-structure\allegro-5.0.10-mingw-4.7.0\include\allegro5\platform\alplatf.h
+1653573394 c:\users\admin\desktop\projekty\trie-data-structure\allegro-5.0.10-mingw-4.7.0\include\allegro5\platform\alplatf.h
 
-1650796860 c:\users\admin\desktop\projekty\trie-data-structure\allegro-5.0.10-mingw-4.7.0\include\allegro5\platform\alwatcom.h
+1653573394 c:\users\admin\desktop\projekty\trie-data-structure\allegro-5.0.10-mingw-4.7.0\include\allegro5\platform\alwatcom.h
 	<io.h>
 	<i86.h>
 	<conio.h>
@@ -678,145 +681,145 @@
 	<direct.h>
 	<malloc.h>
 
-1650796860 c:\users\admin\desktop\projekty\trie-data-structure\allegro-5.0.10-mingw-4.7.0\include\allegro5\platform\almngw32.h
+1653573394 c:\users\admin\desktop\projekty\trie-data-structure\allegro-5.0.10-mingw-4.7.0\include\allegro5\platform\almngw32.h
 	<io.h>
 	<fcntl.h>
 	<direct.h>
 	<malloc.h>
 	"allegro5/platform/alplatf.h"
 
-1650796860 c:\users\admin\desktop\projekty\trie-data-structure\allegro-5.0.10-mingw-4.7.0\include\allegro5\platform\albcc32.h
+1653573394 c:\users\admin\desktop\projekty\trie-data-structure\allegro-5.0.10-mingw-4.7.0\include\allegro5\platform\albcc32.h
 	<io.h>
 	<fcntl.h>
 	<direct.h>
 	<malloc.h>
 
-1650796860 c:\users\admin\desktop\projekty\trie-data-structure\allegro-5.0.10-mingw-4.7.0\include\allegro5\platform\almsvc.h
+1653573394 c:\users\admin\desktop\projekty\trie-data-structure\allegro-5.0.10-mingw-4.7.0\include\allegro5\platform\almsvc.h
 	<io.h>
 	<fcntl.h>
 	<direct.h>
 	<malloc.h>
 	"allegro5/platform/alplatf.h"
 
-1650796860 c:\users\admin\desktop\projekty\trie-data-structure\allegro-5.0.10-mingw-4.7.0\include\allegro5\platform\aliphonecfg.h
+1653573394 c:\users\admin\desktop\projekty\trie-data-structure\allegro-5.0.10-mingw-4.7.0\include\allegro5\platform\aliphonecfg.h
 	<fcntl.h>
 	<unistd.h>
 
-1650796860 c:\users\admin\desktop\projekty\trie-data-structure\allegro-5.0.10-mingw-4.7.0\include\allegro5\platform\alosxcfg.h
+1653573394 c:\users\admin\desktop\projekty\trie-data-structure\allegro-5.0.10-mingw-4.7.0\include\allegro5\platform\alosxcfg.h
 	"allegro5/platform/alplatf.h"
 
-1650796860 c:\users\admin\desktop\projekty\trie-data-structure\allegro-5.0.10-mingw-4.7.0\include\allegro5\platform\alandroidcfg.h
+1653573394 c:\users\admin\desktop\projekty\trie-data-structure\allegro-5.0.10-mingw-4.7.0\include\allegro5\platform\alandroidcfg.h
 
-1650796860 c:\users\admin\desktop\projekty\trie-data-structure\allegro-5.0.10-mingw-4.7.0\include\allegro5\platform\alraspberrypicfg.h
+1653573394 c:\users\admin\desktop\projekty\trie-data-structure\allegro-5.0.10-mingw-4.7.0\include\allegro5\platform\alraspberrypicfg.h
 	<fcntl.h>
 	<unistd.h>
 	<sys/types.h>
 
-1650796860 c:\users\admin\desktop\projekty\trie-data-structure\allegro-5.0.10-mingw-4.7.0\include\allegro5\platform\alucfg.h
+1653573394 c:\users\admin\desktop\projekty\trie-data-structure\allegro-5.0.10-mingw-4.7.0\include\allegro5\platform\alucfg.h
 	<fcntl.h>
 	<unistd.h>
 	"alunix.h"
 	"allegro5/platform/alplatf.h"
 
-1650796860 c:\users\admin\desktop\projekty\trie-data-structure\allegro-5.0.10-mingw-4.7.0\include\allegro5\platform\alunix.h
+1653573394 c:\users\admin\desktop\projekty\trie-data-structure\allegro-5.0.10-mingw-4.7.0\include\allegro5\platform\alunix.h
 
-1650796860 c:\users\admin\desktop\projekty\trie-data-structure\allegro-5.0.10-mingw-4.7.0\include\allegro5\platform\allegro_sdl_config.h
+1653573394 c:\users\admin\desktop\projekty\trie-data-structure\allegro-5.0.10-mingw-4.7.0\include\allegro5\platform\allegro_sdl_config.h
 	<fcntl.h>
 	<unistd.h>
 
-1650796860 c:\users\admin\desktop\projekty\trie-data-structure\allegro-5.0.10-mingw-4.7.0\include\allegro5\platform\astdint.h
+1653573394 c:\users\admin\desktop\projekty\trie-data-structure\allegro-5.0.10-mingw-4.7.0\include\allegro5\platform\astdint.h
 	<inttypes.h>
 	<stdint.h>
 	<limits.h>
 
-1650796860 c:\users\admin\desktop\projekty\trie-data-structure\allegro-5.0.10-mingw-4.7.0\include\allegro5\platform\astdbool.h
+1653573394 c:\users\admin\desktop\projekty\trie-data-structure\allegro-5.0.10-mingw-4.7.0\include\allegro5\platform\astdbool.h
 	<stdbool.h>
 
-1650796860 c:\users\admin\desktop\projekty\trie-data-structure\allegro-5.0.10-mingw-4.7.0\include\allegro5\altime.h
+1653573392 c:\users\admin\desktop\projekty\trie-data-structure\allegro-5.0.10-mingw-4.7.0\include\allegro5\altime.h
 	"allegro5/base.h"
 
-1650796860 c:\users\admin\desktop\projekty\trie-data-structure\allegro-5.0.10-mingw-4.7.0\include\allegro5\bitmap.h
+1653573392 c:\users\admin\desktop\projekty\trie-data-structure\allegro-5.0.10-mingw-4.7.0\include\allegro5\bitmap.h
 	"allegro5/color.h"
 
-1650796860 c:\users\admin\desktop\projekty\trie-data-structure\allegro-5.0.10-mingw-4.7.0\include\allegro5\color.h
+1653573392 c:\users\admin\desktop\projekty\trie-data-structure\allegro-5.0.10-mingw-4.7.0\include\allegro5\color.h
 	"allegro5/base.h"
 
-1650796860 c:\users\admin\desktop\projekty\trie-data-structure\allegro-5.0.10-mingw-4.7.0\include\allegro5\bitmap_draw.h
+1653573392 c:\users\admin\desktop\projekty\trie-data-structure\allegro-5.0.10-mingw-4.7.0\include\allegro5\bitmap_draw.h
 	"allegro5/bitmap.h"
 
-1650796860 c:\users\admin\desktop\projekty\trie-data-structure\allegro-5.0.10-mingw-4.7.0\include\allegro5\bitmap_io.h
+1653573392 c:\users\admin\desktop\projekty\trie-data-structure\allegro-5.0.10-mingw-4.7.0\include\allegro5\bitmap_io.h
 	"allegro5/bitmap.h"
 	"allegro5/file.h"
 
-1650796860 c:\users\admin\desktop\projekty\trie-data-structure\allegro-5.0.10-mingw-4.7.0\include\allegro5\file.h
+1653573392 c:\users\admin\desktop\projekty\trie-data-structure\allegro-5.0.10-mingw-4.7.0\include\allegro5\file.h
 	"allegro5/base.h"
 	"allegro5/path.h"
 	"allegro5/utf8.h"
 
-1650796860 c:\users\admin\desktop\projekty\trie-data-structure\allegro-5.0.10-mingw-4.7.0\include\allegro5\path.h
+1653573392 c:\users\admin\desktop\projekty\trie-data-structure\allegro-5.0.10-mingw-4.7.0\include\allegro5\path.h
 	"allegro5/base.h"
 	"allegro5/utf8.h"
 
-1650796860 c:\users\admin\desktop\projekty\trie-data-structure\allegro-5.0.10-mingw-4.7.0\include\allegro5\utf8.h
+1653573392 c:\users\admin\desktop\projekty\trie-data-structure\allegro-5.0.10-mingw-4.7.0\include\allegro5\utf8.h
 	"allegro5/base.h"
 
-1650796860 c:\users\admin\desktop\projekty\trie-data-structure\allegro-5.0.10-mingw-4.7.0\include\allegro5\bitmap_lock.h
+1653573392 c:\users\admin\desktop\projekty\trie-data-structure\allegro-5.0.10-mingw-4.7.0\include\allegro5\bitmap_lock.h
 	"allegro5/bitmap.h"
 
-1650796860 c:\users\admin\desktop\projekty\trie-data-structure\allegro-5.0.10-mingw-4.7.0\include\allegro5\blender.h
+1653573392 c:\users\admin\desktop\projekty\trie-data-structure\allegro-5.0.10-mingw-4.7.0\include\allegro5\blender.h
 	"allegro5/base.h"
 	"allegro5/color.h"
 
-1650796860 c:\users\admin\desktop\projekty\trie-data-structure\allegro-5.0.10-mingw-4.7.0\include\allegro5\clipboard.h
+1653573392 c:\users\admin\desktop\projekty\trie-data-structure\allegro-5.0.10-mingw-4.7.0\include\allegro5\clipboard.h
 	"allegro5/base.h"
 	"allegro5/display.h"
 	"allegro5/utf8.h"
 
-1650796860 c:\users\admin\desktop\projekty\trie-data-structure\allegro-5.0.10-mingw-4.7.0\include\allegro5\display.h
+1653573392 c:\users\admin\desktop\projekty\trie-data-structure\allegro-5.0.10-mingw-4.7.0\include\allegro5\display.h
 	"allegro5/bitmap.h"
 	"allegro5/color.h"
 	"allegro5/events.h"
 
-1650796860 c:\users\admin\desktop\projekty\trie-data-structure\allegro-5.0.10-mingw-4.7.0\include\allegro5\events.h
+1653573392 c:\users\admin\desktop\projekty\trie-data-structure\allegro-5.0.10-mingw-4.7.0\include\allegro5\events.h
 	"allegro5/altime.h"
 
-1650796860 c:\users\admin\desktop\projekty\trie-data-structure\allegro-5.0.10-mingw-4.7.0\include\allegro5\config.h
+1653573392 c:\users\admin\desktop\projekty\trie-data-structure\allegro-5.0.10-mingw-4.7.0\include\allegro5\config.h
 	"allegro5/file.h"
 
-1650796860 c:\users\admin\desktop\projekty\trie-data-structure\allegro-5.0.10-mingw-4.7.0\include\allegro5\cpu.h
+1653573392 c:\users\admin\desktop\projekty\trie-data-structure\allegro-5.0.10-mingw-4.7.0\include\allegro5\cpu.h
 	"allegro5/base.h"
 
-1650796860 c:\users\admin\desktop\projekty\trie-data-structure\allegro-5.0.10-mingw-4.7.0\include\allegro5\debug.h
+1653573392 c:\users\admin\desktop\projekty\trie-data-structure\allegro-5.0.10-mingw-4.7.0\include\allegro5\debug.h
 	<assert.h>
 	"allegro5/base.h"
 
-1650796860 c:\users\admin\desktop\projekty\trie-data-structure\allegro-5.0.10-mingw-4.7.0\include\allegro5\drawing.h
+1653573392 c:\users\admin\desktop\projekty\trie-data-structure\allegro-5.0.10-mingw-4.7.0\include\allegro5\drawing.h
 	"allegro5/color.h"
 
-1650796860 c:\users\admin\desktop\projekty\trie-data-structure\allegro-5.0.10-mingw-4.7.0\include\allegro5\error.h
+1653573392 c:\users\admin\desktop\projekty\trie-data-structure\allegro-5.0.10-mingw-4.7.0\include\allegro5\error.h
 	"allegro5/base.h"
 
-1650796860 c:\users\admin\desktop\projekty\trie-data-structure\allegro-5.0.10-mingw-4.7.0\include\allegro5\fixed.h
+1653573392 c:\users\admin\desktop\projekty\trie-data-structure\allegro-5.0.10-mingw-4.7.0\include\allegro5\fixed.h
 	"allegro5/base.h"
 
-1650796860 c:\users\admin\desktop\projekty\trie-data-structure\allegro-5.0.10-mingw-4.7.0\include\allegro5\fmaths.h
+1653573392 c:\users\admin\desktop\projekty\trie-data-structure\allegro-5.0.10-mingw-4.7.0\include\allegro5\fmaths.h
 	"allegro5/base.h"
 	"allegro5/fixed.h"
 	"allegro5/inline/fmaths.inl"
 
-1650796860 c:\users\admin\desktop\projekty\trie-data-structure\allegro-5.0.10-mingw-4.7.0\include\allegro5\inline\fmaths.inl
+1653573392 c:\users\admin\desktop\projekty\trie-data-structure\allegro-5.0.10-mingw-4.7.0\include\allegro5\inline\fmaths.inl
 	"allegro5/error.h"
 
-1650796860 c:\users\admin\desktop\projekty\trie-data-structure\allegro-5.0.10-mingw-4.7.0\include\allegro5\fshook.h
+1653573392 c:\users\admin\desktop\projekty\trie-data-structure\allegro-5.0.10-mingw-4.7.0\include\allegro5\fshook.h
 	"allegro5/base.h"
 	"allegro5/file.h"
 	"allegro5/path.h"
 	<sys/types.h>
 
-1650796860 c:\users\admin\desktop\projekty\trie-data-structure\allegro-5.0.10-mingw-4.7.0\include\allegro5\fullscreen_mode.h
+1653573392 c:\users\admin\desktop\projekty\trie-data-structure\allegro-5.0.10-mingw-4.7.0\include\allegro5\fullscreen_mode.h
 	"allegro5/base.h"
 
-1650796860 c:\users\admin\desktop\projekty\trie-data-structure\allegro-5.0.10-mingw-4.7.0\include\allegro5\haptic.h
+1653573392 c:\users\admin\desktop\projekty\trie-data-structure\allegro-5.0.10-mingw-4.7.0\include\allegro5\haptic.h
 	"allegro5/base.h"
 	"allegro5/display.h"
 	"allegro5/events.h"
@@ -825,64 +828,64 @@
 	"allegro5/mouse.h"
 	"allegro5/touch_input.h"
 
-1650796860 c:\users\admin\desktop\projekty\trie-data-structure\allegro-5.0.10-mingw-4.7.0\include\allegro5\joystick.h
+1653573392 c:\users\admin\desktop\projekty\trie-data-structure\allegro-5.0.10-mingw-4.7.0\include\allegro5\joystick.h
 	"allegro5/base.h"
 	"allegro5/events.h"
 
-1650796860 c:\users\admin\desktop\projekty\trie-data-structure\allegro-5.0.10-mingw-4.7.0\include\allegro5\keyboard.h
+1653573392 c:\users\admin\desktop\projekty\trie-data-structure\allegro-5.0.10-mingw-4.7.0\include\allegro5\keyboard.h
 	"allegro5/base.h"
 	"allegro5/events.h"
 	"allegro5/keycodes.h"
 
-1650796860 c:\users\admin\desktop\projekty\trie-data-structure\allegro-5.0.10-mingw-4.7.0\include\allegro5\keycodes.h
+1653573392 c:\users\admin\desktop\projekty\trie-data-structure\allegro-5.0.10-mingw-4.7.0\include\allegro5\keycodes.h
 
-1650796860 c:\users\admin\desktop\projekty\trie-data-structure\allegro-5.0.10-mingw-4.7.0\include\allegro5\mouse.h
+1653573392 c:\users\admin\desktop\projekty\trie-data-structure\allegro-5.0.10-mingw-4.7.0\include\allegro5\mouse.h
 	"allegro5/base.h"
 	"allegro5/events.h"
 
-1650796860 c:\users\admin\desktop\projekty\trie-data-structure\allegro-5.0.10-mingw-4.7.0\include\allegro5\touch_input.h
+1653573392 c:\users\admin\desktop\projekty\trie-data-structure\allegro-5.0.10-mingw-4.7.0\include\allegro5\touch_input.h
 	"allegro5/base.h"
 	"allegro5/events.h"
 
-1650796860 c:\users\admin\desktop\projekty\trie-data-structure\allegro-5.0.10-mingw-4.7.0\include\allegro5\memory.h
+1653573392 c:\users\admin\desktop\projekty\trie-data-structure\allegro-5.0.10-mingw-4.7.0\include\allegro5\memory.h
 	"allegro5/base.h"
 
-1650796860 c:\users\admin\desktop\projekty\trie-data-structure\allegro-5.0.10-mingw-4.7.0\include\allegro5\monitor.h
+1653573392 c:\users\admin\desktop\projekty\trie-data-structure\allegro-5.0.10-mingw-4.7.0\include\allegro5\monitor.h
 	"allegro5/base.h"
 
-1650796860 c:\users\admin\desktop\projekty\trie-data-structure\allegro-5.0.10-mingw-4.7.0\include\allegro5\mouse_cursor.h
+1653573392 c:\users\admin\desktop\projekty\trie-data-structure\allegro-5.0.10-mingw-4.7.0\include\allegro5\mouse_cursor.h
 	"allegro5/base.h"
 
-1650796860 c:\users\admin\desktop\projekty\trie-data-structure\allegro-5.0.10-mingw-4.7.0\include\allegro5\render_state.h
+1653573392 c:\users\admin\desktop\projekty\trie-data-structure\allegro-5.0.10-mingw-4.7.0\include\allegro5\render_state.h
 	"allegro5/base.h"
 
-1650796860 c:\users\admin\desktop\projekty\trie-data-structure\allegro-5.0.10-mingw-4.7.0\include\allegro5\shader.h
+1653573392 c:\users\admin\desktop\projekty\trie-data-structure\allegro-5.0.10-mingw-4.7.0\include\allegro5\shader.h
 	"allegro5/base.h"
 	"allegro5/transformations.h"
 
-1650796860 c:\users\admin\desktop\projekty\trie-data-structure\allegro-5.0.10-mingw-4.7.0\include\allegro5\transformations.h
+1653573392 c:\users\admin\desktop\projekty\trie-data-structure\allegro-5.0.10-mingw-4.7.0\include\allegro5\transformations.h
 	"allegro5/display.h"
 
-1650796860 c:\users\admin\desktop\projekty\trie-data-structure\allegro-5.0.10-mingw-4.7.0\include\allegro5\system.h
+1653573392 c:\users\admin\desktop\projekty\trie-data-structure\allegro-5.0.10-mingw-4.7.0\include\allegro5\system.h
 	"allegro5/config.h"
 	"allegro5/path.h"
 
-1650796860 c:\users\admin\desktop\projekty\trie-data-structure\allegro-5.0.10-mingw-4.7.0\include\allegro5\threads.h
+1653573392 c:\users\admin\desktop\projekty\trie-data-structure\allegro-5.0.10-mingw-4.7.0\include\allegro5\threads.h
 	"allegro5/altime.h"
 
-1650796860 c:\users\admin\desktop\projekty\trie-data-structure\allegro-5.0.10-mingw-4.7.0\include\allegro5\timer.h
+1653573392 c:\users\admin\desktop\projekty\trie-data-structure\allegro-5.0.10-mingw-4.7.0\include\allegro5\timer.h
 	"allegro5/base.h"
 	"allegro5/events.h"
 
-1650796860 c:\users\admin\desktop\projekty\trie-data-structure\allegro-5.0.10-mingw-4.7.0\include\allegro5\tls.h
+1653573392 c:\users\admin\desktop\projekty\trie-data-structure\allegro-5.0.10-mingw-4.7.0\include\allegro5\tls.h
 	"allegro5/base.h"
 
-1650796860 c:\users\admin\desktop\projekty\trie-data-structure\allegro-5.0.10-mingw-4.7.0\include\allegro5\alcompat.h
+1653573392 c:\users\admin\desktop\projekty\trie-data-structure\allegro-5.0.10-mingw-4.7.0\include\allegro5\alcompat.h
 
-1650796860 c:\users\admin\desktop\projekty\trie-data-structure\allegro-5.0.10-mingw-4.7.0\include\allegro5\allegro_font.h
+1653573392 c:\users\admin\desktop\projekty\trie-data-structure\allegro-5.0.10-mingw-4.7.0\include\allegro5\allegro_font.h
 	"allegro5/allegro.h"
 
-1650796860 c:\users\admin\desktop\projekty\trie-data-structure\allegro-5.0.10-mingw-4.7.0\include\allegro5\allegro_primitives.h
+1653573392 c:\users\admin\desktop\projekty\trie-data-structure\allegro-5.0.10-mingw-4.7.0\include\allegro5\allegro_primitives.h
 	<allegro5/allegro.h>
 
 1653671299 source:c:\users\szymo\downloads\trie-data-structure-master\main.c
@@ -1214,6 +1217,38 @@
 	"struktury.h"
 
 1653693255 source:c:\users\szymo\downloads\trie-data-structure-master\rysowanie.c
+	<allegro5/allegro5.h>
+	<allegro5/allegro_font.h>
+	<allegro5/allegro_primitives.h>
+	"struktury.h"
+
+1654354052 source:c:\users\admin\desktop\projekty\trie-data-structure\komunikacja.c
+	<string.h>
+	<sys/time.h>
+	"windows.h"
+	<allegro5/allegro5.h>
+	<allegro5/allegro_font.h>
+	<allegro5/allegro_primitives.h>
+	"struktury.h"
+
+1654353773 c:\users\admin\desktop\projekty\trie-data-structure\struktury.h
+
+1654270362 c:\users\admin\desktop\projekty\trie-data-structure\rysowanie.h
+
+1654270352 c:\users\admin\desktop\projekty\trie-data-structure\drzewo.h
+
+1654270358 c:\users\admin\desktop\projekty\trie-data-structure\komunikacja.h
+
+1654353815 source:c:\users\admin\desktop\projekty\trie-data-structure\rysowanie.c
+	<allegro5/allegro5.h>
+	<allegro5/allegro_font.h>
+	<allegro5/allegro_primitives.h>
+	"struktury.h"
+
+1654353247 source:c:\users\admin\desktop\projekty\trie-data-structure\drzewo.c
+	<stdio.h>
+	<stdlib.h>
+	<ctype.h>
 	<allegro5/allegro5.h>
 	<allegro5/allegro_font.h>
 	<allegro5/allegro_primitives.h>
